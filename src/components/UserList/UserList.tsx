@@ -13,8 +13,21 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import {Link} from "react-router-dom";
-import { useUsersQuery } from "../../generated/graphql";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch
+} from "react-router-dom";
+import { useUpdateUserMutation, useUsersQuery } from "../../generated/graphql";
+
+
+interface Values {
+  id: number;
+  status: string;
+}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,8 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     marginTop: theme.spacing(2),
-    marginLeft: '100px', 
-    width: '90%'
+    width: '100%'
   },
   paper: {
     padding: theme.spacing(2),
@@ -54,9 +66,12 @@ export default function UserList() {
   // const data = [{userid: 1, surname:"John", name:"Doe", age:50, creationDate: "28/03/2000"},{userid: 2, surname:"Jean", name:"Doe", age:50,creationDate: "28/03/2000"},{userid: 3, surname:"Fred", name:"Doe", age:50,creationDate: "28/03/2000"}];
   const classes = useStyles();
   const { data, loading: meLoading } = useUsersQuery();
+  const [updateUser] = useUpdateUserMutation();
+  let match = useRouteMatch();
 
-  const UserDelete = (userid:number) => {
-    console.log("delete" + userid)
+  const UserArchived = (values: Values) => {
+    updateUser({variables: values });
+    return alert("utilisateur archivé avec succès ");
   }
 
   return (
@@ -98,13 +113,13 @@ export default function UserList() {
                       <Avatar alt="test"/>
                     </Box>
                   </TableCell>
-                  <TableCell align="left">{users.surname}</TableCell>
                   <TableCell align="left">{users.name}</TableCell>
+                  <TableCell align="left">{users.surname}</TableCell>
                   <TableCell align="left">{users.userType}</TableCell>
                   <TableCell align="center">
                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                        <Link to={`update/${users.id}`} className={classes.edit}><Button >Modifier</Button></Link>
-                       <Link to='delete' className={classes.del}><Button onClick={() => UserDelete(users.id)}>Supprimer</Button></Link>
+                       <Link to='/users' className={classes.del}><Button onClick={() => UserArchived({id: users.id, status: "closed"})}>Archivé</Button></Link>
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>

@@ -10,6 +10,7 @@ import {
   Route,
 } from "react-router-dom";
 import UserUpdate from './components/UserUpdate';
+import { useMeQuery } from './generated/graphql';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
     <ApolloProvider client={apolloClient}>
       <div className="App">
         <Router>
-          <Sidebar Title="Dashboard UserType">
+          <Sidebar>
             <Container maxWidth="xl">
               <Switch>
                 <Route path="/users" component={UserList} />

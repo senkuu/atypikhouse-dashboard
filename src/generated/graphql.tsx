@@ -100,6 +100,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   updateUser?: Maybe<UserResponse>;
+  deleteUser: Scalars['Boolean'];
   createBooking: Booking;
   updateBooking?: Maybe<Booking>;
   deleteBooking: Scalars['Boolean'];
@@ -196,6 +197,11 @@ export type MutationUpdateUserArgs = {
   surname?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteUserArgs = {
   id: Scalars['Float'];
 };
 
@@ -620,15 +626,23 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['Float'];
-  website: Scalars['String'];
-  description: Scalars['String'];
-  name: Scalars['String'];
-  surname: Scalars['String'];
-  email: Scalars['String'];
+  website?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  surname?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
 }>;
 
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, website?: Maybe<string>, description?: Maybe<string>, name: string, surname: string, email: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> }> };
+
+export type UserQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -896,7 +910,7 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateUserDocument = gql`
-    mutation updateUser($id: Float!, $website: String!, $description: String!, $name: String!, $surname: String!, $email: String!) {
+    mutation updateUser($id: Float!, $website: String, $description: String, $name: String, $surname: String, $email: String, $status: String) {
   updateUser(
     id: $id
     website: $website
@@ -904,6 +918,7 @@ export const UpdateUserDocument = gql`
     name: $name
     surname: $surname
     email: $email
+    status: $status
   ) {
     user {
       id
@@ -941,6 +956,7 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *      name: // value for 'name'
  *      surname: // value for 'surname'
  *      email: // value for 'email'
+ *      status: // value for 'status'
  *   },
  * });
  */
@@ -951,6 +967,41 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UserDocument = gql`
+    query user($id: Float!) {
+  user(id: $id) {
+    ...BaseUser
+  }
+}
+    ${BaseUserFragmentDoc}`;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
