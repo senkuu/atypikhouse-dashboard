@@ -1,0 +1,15 @@
+query Offers(
+  $cityId: Float!
+  $getCities: Boolean!
+  $getDepartements: Boolean!
+) {
+  offers(
+    cityId: $cityId
+    getCities: $getCities
+    getDepartements: $getDepartements
+  ) {
+    offers{
+      ...BaseOffer
+    }
+  }
+}

@@ -1,0 +1,17 @@
+fragment BaseOffer on Offer {
+  id
+  title
+  description
+  city {
+    name
+    id
+    departement {
+      number
+    }
+  }
+  distance
+  sortScore
+  averageRating
+  latitude
+  longitude
+}

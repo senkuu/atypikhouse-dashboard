@@ -1,0 +1,5 @@
+query Offer($id: Float!) {
+  offer(id: $id) {
+    ...BaseOffer
+  }
+}
