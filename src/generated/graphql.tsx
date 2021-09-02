@@ -406,6 +406,8 @@ export type Query = {
   offers: Array<Offer>;
   offer?: Maybe<Offer>;
   me?: Maybe<User>;
+  users: Array<User>;
+  user?: Maybe<User>;
   bookings: Array<Booking>;
   booking?: Maybe<Booking>;
   criterias: Array<Criteria>;
@@ -422,6 +424,7 @@ export type Query = {
 
 
 export type QueryOffersArgs = {
+  ownerId?: Maybe<Scalars['Float']>;
   getDepartements?: Maybe<Scalars['Boolean']>;
   getCities?: Maybe<Scalars['Boolean']>;
   cityId?: Maybe<Scalars['Float']>;
@@ -430,6 +433,16 @@ export type QueryOffersArgs = {
 
 
 export type QueryOfferArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type QueryUsersArgs = {
+  relations?: Maybe<Array<Scalars['String']>>;
+};
+
+
+export type QueryUserArgs = {
   id: Scalars['Float'];
 };
 
@@ -560,9 +573,9 @@ export type BaseErrorFragment = { __typename?: 'FieldError', field: string, mess
 
 export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
 
-export type BaseUserFragment = { __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string> };
+export type BaseUserFragment = { __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string };
 
-export type BaseUserResponseFragment = { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string> }> };
+export type BaseUserResponseFragment = { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> };
 
 export type CreateBookingMutationVariables = Exact<{
   startDate: Scalars['DateTime'];
@@ -586,7 +599,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string> }> } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -603,7 +616,7 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string> }> } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> } };
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -617,10 +630,15 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, website?: Maybe<string>, description?: Maybe<string>, name: string, surname: string, email: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> }> };
 
+export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string> }> };
+export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> };
 
 export type OfferQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -679,6 +697,8 @@ export const BaseUserFragmentDoc = gql`
   email
   description
   website
+  userType
+  status
 }
     `;
 export const BaseUserResponseFragmentDoc = gql`
@@ -931,6 +951,40 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UsersDocument = gql`
+    query Users {
+  users {
+    ...BaseUser
+  }
+}
+    ${BaseUserFragmentDoc}`;
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+      }
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

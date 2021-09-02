@@ -1,6 +1,5 @@
 import React, { InputHTMLAttributes } from "react";
 import Icon from "@material-ui/core/Icon";
-
 import { Field, useField } from "formik";
 import { InputLabel, makeStyles } from "@material-ui/core";
 
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function InputField({ label, icon, ...props }: InputFieldProps) {
-  const [field, { error }] = useField(props);
+  const [field] = useField(props);
   const classes = useStyles();
   return (
     <div>

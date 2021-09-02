@@ -14,6 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import {Link} from "react-router-dom";
+import { useUsersQuery } from "../../generated/graphql";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,11 +51,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UserList() {
 
-  const data = [{userid: 1, surname:"John", name:"Doe", age:50, creationDate: "28/03/2000"},{userid: 2, surname:"Jean", name:"Doe", age:50,creationDate: "28/03/2000"},{userid: 3, surname:"Fred", name:"Doe", age:50,creationDate: "28/03/2000"}];
+  // const data = [{userid: 1, surname:"John", name:"Doe", age:50, creationDate: "28/03/2000"},{userid: 2, surname:"Jean", name:"Doe", age:50,creationDate: "28/03/2000"},{userid: 3, surname:"Fred", name:"Doe", age:50,creationDate: "28/03/2000"}];
   const classes = useStyles();
+  const { data, loading: meLoading } = useUsersQuery();
 
-  const UserDelete = () => {
-    console.log("delete")
+  const UserDelete = (userid:number) => {
+    console.log("delete" + userid)
   }
 
   return (
@@ -83,26 +85,26 @@ export default function UserList() {
                 <TableCell align="center">Avatar</TableCell>
                 <TableCell align="left">Prénom</TableCell>
                 <TableCell align="left">Nom</TableCell>
-                <TableCell align="left">date de création</TableCell>
+                <TableCell align="left">UserType</TableCell>
                 <TableCell align="center">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((data) => (
-                <TableRow key={data.userid}>
-                  <TableCell align="right">{data.userid}</TableCell>
+              {data && data?.users?.map((users) => (
+                <TableRow key={users.id}>
+                  <TableCell align="right">{users.id}</TableCell>
                   <TableCell align="center">
                     <Box display="flex" justifyContent="center">
                       <Avatar alt="test"/>
                     </Box>
                   </TableCell>
-                  <TableCell align="left">{data.surname}</TableCell>
-                  <TableCell align="left">{data.name}</TableCell>
-                  <TableCell align="left">{data.creationDate}</TableCell>
+                  <TableCell align="left">{users.surname}</TableCell>
+                  <TableCell align="left">{users.name}</TableCell>
+                  <TableCell align="left">{users.userType}</TableCell>
                   <TableCell align="center">
                     <ButtonGroup color="primary" aria-label="outlined primary button group">
-                       <Link to='update' className={classes.edit}><Button >Modifier</Button></Link>
-                       <Link to='delete' className={classes.del}><Button onClick={() => UserDelete()}>Supprimer</Button></Link>
+                       <Link to={`update/${users.id}`} className={classes.edit}><Button >Modifier</Button></Link>
+                       <Link to='delete' className={classes.del}><Button onClick={() => UserDelete(users.id)}>Supprimer</Button></Link>
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
