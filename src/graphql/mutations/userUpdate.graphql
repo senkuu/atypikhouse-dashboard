@@ -1,0 +1,31 @@
+mutation updateUser(
+  $id: Float!
+  $website: String!
+  $description: String!
+  $name: String!
+  $surname: String!
+  $email: String! # $cityId: String!
+) {
+  updateUser(
+    id: $id
+    website: $website
+    description: $description
+    name: $name
+    surname: $surname
+    email: $email # cityId: $cityId
+  ) {
+    user {
+      id
+      website
+      description
+      name
+      surname
+      email
+      # cityId
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

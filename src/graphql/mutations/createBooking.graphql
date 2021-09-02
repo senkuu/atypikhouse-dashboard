@@ -1,0 +1,41 @@
+mutation createBooking(
+  $startDate: DateTime!
+  $endDate: DateTime!
+  $adults: Float!
+  $children: Float!
+  $occupantId: Float!
+  $offerId: Float!
+  $priceTTC: Float!
+  $priceHT: Float!
+  $status: String!
+  $cancelReason: String!
+) {
+  createBooking(
+    startDate: $startDate
+    endDate: $endDate
+    adults: $adults
+    children: $children
+    occupantId: $occupantId
+    offerId: $offerId
+    priceTTC: $priceTTC
+    priceHT: $priceHT
+    status: $status
+    cancelReason: $cancelReason
+  ) {
+    id
+    status
+    startDate
+    endDate
+    adults
+    children
+    priceHT
+    priceTTC
+    cancelReason
+    occupant {
+      id
+      name
+      surname
+      email
+    }
+  }
+}

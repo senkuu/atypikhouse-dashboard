@@ -16,7 +16,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { LocalOffer, Publish, Mail, Group } from '@material-ui/icons';
-import {Link, Router} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 interface props {
     Title: string;
@@ -93,7 +93,7 @@ export default function Sidebar(props: props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  
   const handleDrawerOpen = () => {
     setOpen(true);
   };

@@ -8,8 +8,6 @@ query Offers(
     getCities: $getCities
     getDepartements: $getDepartements
   ) {
-    offers{
-      ...BaseOffer
-    }
+    ...BaseOffer
   }
 }

@@ -8,11 +8,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import UserUpdate from './components/UserUpdate';
 
 function App() {
+
   return (
     <ApolloProvider client={apolloClient}>
       <div className="App">

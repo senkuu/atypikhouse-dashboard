@@ -14,4 +14,12 @@ fragment BaseOffer on Offer {
   averageRating
   latitude
   longitude
+  priceTTC
+  offerType {
+    id
+    name
+  }
+  owner {
+    name
+  }
 }
