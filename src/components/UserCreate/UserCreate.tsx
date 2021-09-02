@@ -1,14 +1,14 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import InputField from '../InputField';
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import InputField from "../InputField";
 import { useApolloClient } from "@apollo/client";
 import { Formik, Form, Field } from "formik";
-import { useRegisterMutation } from '../../generated/graphql';
-import { InputLabel } from '@material-ui/core';
+import { useMeQuery, useRegisterMutation } from "../../generated/graphql";
+import { InputLabel } from "@material-ui/core";
 interface Values {
   name: string;
   surname: string;
@@ -20,60 +20,62 @@ interface Values {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    background: 'white',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    alignItems: 'center',
-    overflowX: 'hidden',
-    overflowY: 'auto',
-    width: '100%',
-    height: '60%',
+    background: "white",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    overflowX: "hidden",
+    overflowY: "auto",
+    width: "100%",
+    height: "60%",
     zIndex: 50,
-    margin: 'auto',
-    padding: '70px'
+    margin: "auto",
+    padding: "70px",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    background: '#2B463C',
-    color: 'white',
+    background: "#2B463C",
+    color: "white",
   },
 }));
 
 export default function UserCreate() {
-    
   const classes = useStyles();
 
   const apolloClient = useApolloClient();
   const [register] = useRegisterMutation();
+  const { data: userMe } = useMeQuery();
 
   const handleFormSubmit = async (values: Values) => {
     const response = await register({ variables: values });
 
-    apolloClient.resetStore();
+    // apolloClient.resetStore();
     // console.log(values)
     if (response === null) {
-      
-      console.log("fuck ça marche pas")
+      console.log("ça marche pas");
     }
-  
-    console.log("un espoir")
+
+    console.log("un espoir");
   };
 
+  if(userMe?.me?.userType === "owner" || "default" || "certifiedOwner"){
+    return <p>Vous ne pouvez pas accéder à cette page.</p>
+  }
 
   return (
     <Container maxWidth="md">
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Création de compte : 
+          Création de compte :
         </Typography>
         <Formik
           initialValues={{
@@ -98,7 +100,6 @@ export default function UserCreate() {
                     placeholder="Dupont"
                     required
                   />
-                  
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <InputField
@@ -130,8 +131,21 @@ export default function UserCreate() {
                     required
                   />
                 </Grid>
-                <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
-                <InputLabel htmlFor="userType" style={{ marginRight: '10px', marginTop: '15px', fontSize: '12px'}}>Type d'utilisateur</InputLabel >
+                <Grid
+                  item
+                  xs={12}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <InputLabel
+                    htmlFor="userType"
+                    style={{
+                      marginRight: "10px",
+                      marginTop: "15px",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Type d'utilisateur
+                  </InputLabel>
                   <Field
                     style={{
                       width: "50%",
@@ -147,7 +161,6 @@ export default function UserCreate() {
                       height: "40px",
                     }}
                     name="userType"
-
                     as="select"
                     required
                   >

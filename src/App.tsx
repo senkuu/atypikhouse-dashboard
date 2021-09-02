@@ -1,19 +1,13 @@
-import { ApolloProvider } from '@apollo/client'
-import Container from '@material-ui/core/Container';
-import apolloClient from './apolloClient'
-import Sidebar from './components/Sidebar'
-import UserCreate from './components/UserCreate'
-import UserList from './components/UserList'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import UserUpdate from './components/UserUpdate';
-import { useMeQuery } from './generated/graphql';
+import { ApolloProvider } from "@apollo/client";
+import Container from "@material-ui/core/Container";
+import apolloClient from "./apolloClient";
+import Sidebar from "./components/Sidebar";
+import UserCreate from "./components/UserCreate";
+import UserList from "./components/UserList";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import UserUpdate from "./components/UserUpdate";
 
 function App() {
-
   return (
     <ApolloProvider client={apolloClient}>
       <div className="App">

@@ -5,7 +5,12 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { useLocation } from "react-router-dom";
-import { useUpdateUserMutation, useUserQuery, useUsersQuery } from "../../generated/graphql";
+import {
+  useMeQuery,
+  useUpdateUserMutation,
+  useUserQuery,
+  useUsersQuery,
+} from "../../generated/graphql";
 import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import InputField from "../InputField";
@@ -19,7 +24,6 @@ interface Values {
   email: string;
   //   city: string;
 }
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,13 +54,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserUpdate() {
-
   // get user id from pathname.
   const classes = useStyles();
 
   const location = useLocation();
   const getLocation = location.pathname.split("update/")[1];
-  const ID:number = parseInt(getLocation); 
+  const ID: number = parseInt(getLocation);
   console.log(ID);
   const { data, loading: meLoading } = useUserQuery({
     variables: {
@@ -69,16 +72,18 @@ export default function UserUpdate() {
   //Update user information from formik
   const [updateUser] = useUpdateUserMutation();
 
-
+  //check if userType have access
+  const { data: userMe } = useMeQuery();
+  if(userMe?.me?.userType === "owner" || "default" || "certifiedOwner"){
+    return <p>Vous ne pouvez pas accéder à cette page.</p>
+  }
   if (data === undefined || data === null) {
     return <p>page non disponible, Veuillez préciser un ID utilisateur </p>;
   }
-  
-  if(data?.user?.id === ID && null){
-    return <p>desole existe pas</p>
-  }
-  
 
+  if (data?.user?.id === ID && null) {
+    return <p>desole existe pas</p>;
+  }
 
   // Check if url already
   const checkURL = () => {
@@ -117,14 +122,14 @@ export default function UserUpdate() {
   } else if (!data?.user) {
     body = (
       <>
-      <p>L'ID de l'utilisateur n'existe pas</p>
-    </>
+        <p>L'ID de l'utilisateur n'existe pas</p>
+      </>
     );
   } else {
     body = (
       <>
         <Container maxWidth="md">
-      <div className={classes.paper}>
+          <div className={classes.paper}>
             <Typography component="h1" variant="h5">
               Modifier profil utilisateur
             </Typography>
@@ -144,54 +149,54 @@ export default function UserUpdate() {
                 <Form>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                    <InputField
-                              icon="http"
-                              label="Site web"
-                              name="website"
-                              type="text"
-                              placeholder="nomdedomaine.com"
-                              required
-                            />
+                      <InputField
+                        icon="http"
+                        label="Site web"
+                        name="website"
+                        type="text"
+                        placeholder="nomdedomaine.com"
+                        required
+                      />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                    <InputField
-                            icon="subject"
-                            label="A propos de vous"
-                            name="description"
-                            type="text"
-                            placeholder="Raconter nous comment vous êtes unique."
-                            required
-                          />
+                      <InputField
+                        icon="subject"
+                        label="A propos de vous"
+                        name="description"
+                        type="text"
+                        placeholder="Raconter nous comment vous êtes unique."
+                        required
+                      />
                     </Grid>
                     <Grid item xs={12}>
-                    <InputField
-                              icon="person"
-                              label="Nom"
-                              name="name"
-                              type="text"
-                              placeholder={data?.user?.name}
-                              required
-                            />
+                      <InputField
+                        icon="person"
+                        label="Nom"
+                        name="name"
+                        type="text"
+                        placeholder={data?.user?.name}
+                        required
+                      />
                     </Grid>
                     <Grid item xs={12}>
-                    <InputField
-                              icon="person"
-                              label="Prenom"
-                              name="surname"
-                              type="text"
-                              placeholder={data?.user?.surname}
-                              required
-                            />
+                      <InputField
+                        icon="person"
+                        label="Prenom"
+                        name="surname"
+                        type="text"
+                        placeholder={data?.user?.surname}
+                        required
+                      />
                     </Grid>
                     <Grid item xs={12}>
-                    <InputField
-                              icon="alternate_email"
-                              label="Email"
-                              name="email"
-                              type="email"
-                              placeholder={data?.user?.email}
-                              required
-                            />
+                      <InputField
+                        icon="alternate_email"
+                        label="Email"
+                        name="email"
+                        type="email"
+                        placeholder={data?.user?.email}
+                        required
+                      />
                     </Grid>
                   </Grid>
                   <Button
@@ -208,8 +213,8 @@ export default function UserUpdate() {
                 </Form>
               )}
             </Formik>
-      </div>
-    </Container>
+          </div>
+        </Container>
       </>
     );
   }

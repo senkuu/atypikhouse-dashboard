@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      background: '#688F4E',
+      background: "#688F4E",
       transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -106,14 +106,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
-      background: '#2B463C',
-      color: 'white',
+      background: "#2B463C",
+      color: "white",
     },
     form: {
-      display: 'block',
-      width: '50%',
-      background: 'white',
-      margin: 'auto',
+      display: "block",
+      width: "50%",
+      background: "white",
+      margin: "auto",
     },
   })
 );
@@ -147,7 +147,14 @@ export default function Sidebar(props: props) {
   if (meLoading) {
   } else if (!data?.me) {
     body = (
-      <div style={{display:'flex', justifyContent:'center', alignItems:'center', height: '100vh'}}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <Formik
           initialValues={{
             email: "",
@@ -155,24 +162,24 @@ export default function Sidebar(props: props) {
           }}
           onSubmit={handleFormSubmit}
         >
-          {({ isSubmitting }) =>
-           <Form className={classes.form}>
-            <InputField
-                    icon="alternate_email"
-                    label="email"
-                    name="email"
-                    type="email"
-                    placeholder="Dupont.joe@gmail.com"
-                    required
-                  />
-            <InputField
-                    icon="https"
-                    label="Mot de passe"
-                    name="password"
-                    type="password"
-                    placeholder="********"
-                    required
-                  />
+          {({ isSubmitting }) => (
+            <Form className={classes.form}>
+              <InputField
+                icon="alternate_email"
+                label="email"
+                name="email"
+                type="email"
+                placeholder="Dupont.joe@gmail.com"
+                required
+              />
+              <InputField
+                icon="https"
+                label="Mot de passe"
+                name="password"
+                type="password"
+                placeholder="********"
+                required
+              />
               <Button
                 type="submit"
                 fullWidth
@@ -181,7 +188,8 @@ export default function Sidebar(props: props) {
               >
                 Login
               </Button>
-            </Form>}
+            </Form>
+          )}
         </Formik>
       </div>
     );
@@ -209,7 +217,7 @@ export default function Sidebar(props: props) {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" noWrap>
-                {data.me.userType} + {data.me.name}
+                Dashboard {data.me.userType}
               </Typography>
               <Button
                 variant="contained"
@@ -253,7 +261,7 @@ export default function Sidebar(props: props) {
             <Divider />
 
             <List>
-              <Link to="/publish">
+              <Link to="/publish" style={{ textDecoration: "none", color:"#222"}}>
                 <ListItem>
                   <ListItemIcon>
                     <Publish />
@@ -261,7 +269,7 @@ export default function Sidebar(props: props) {
                   <ListItemText>Déposer une annonce</ListItemText>
                 </ListItem>
               </Link>
-              <Link to="/offers">
+              <Link to="/offers" style={{ textDecoration: "none", color:"#222"}}>
                 <ListItem>
                   <ListItemIcon>
                     <LocalOffer />
@@ -271,8 +279,8 @@ export default function Sidebar(props: props) {
               </Link>
             </List>
             <Divider />
-            <List>
-              <Link to="/users">
+            { data.me.userType === "admin" ? <List>
+              <Link to="/users" style={{ textDecoration: "none", color:"#222"}}>
                 <ListItem>
                   <ListItemIcon>
                     <Group />
@@ -280,7 +288,7 @@ export default function Sidebar(props: props) {
                   <ListItemText>Les Utilisateurs</ListItemText>
                 </ListItem>
               </Link>
-              <Link to="/offers_admin">
+              <Link to="/offers_admin" style={{ textDecoration: "none", color:"#222"}}>
                 <ListItem>
                   <ListItemIcon>
                     <Mail />
@@ -288,7 +296,8 @@ export default function Sidebar(props: props) {
                   <ListItemText>Les offres</ListItemText>
                 </ListItem>
               </Link>
-            </List>
+            </List> : <></>}
+            
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
