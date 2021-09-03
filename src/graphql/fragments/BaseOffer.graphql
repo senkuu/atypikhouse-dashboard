@@ -15,6 +15,9 @@ fragment BaseOffer on Offer {
   latitude
   longitude
   priceTTC
+  status
+  createdAt
+  touristTax
   offerType {
     id
     name

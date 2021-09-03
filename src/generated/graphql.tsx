@@ -577,7 +577,7 @@ export type UserResponse = {
 
 export type BaseErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
+export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
 
 export type BaseUserFragment = { __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string };
 
@@ -678,7 +678,7 @@ export type OfferQueryVariables = Exact<{
 }>;
 
 
-export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
+export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
 
 export type OffersQueryVariables = Exact<{
   cityId: Scalars['Float'];
@@ -688,7 +688,7 @@ export type OffersQueryVariables = Exact<{
 }>;
 
 
-export type OffersQuery = { __typename?: 'Query', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
+export type OffersQuery = { __typename?: 'Query', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
 
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {
@@ -708,6 +708,9 @@ export const BaseOfferFragmentDoc = gql`
   latitude
   longitude
   priceTTC
+  status
+  createdAt
+  touristTax
   offerType {
     id
     name

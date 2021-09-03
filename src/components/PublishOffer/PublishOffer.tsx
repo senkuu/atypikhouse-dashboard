@@ -88,7 +88,7 @@ export default function PublishOffer() {
             touristTax: 0,
             description: "",
             title: "",
-            status: "WAITING_APPROVAL",
+            status: "AVAILABLE",
             address: "",
             latitude: 48.862725,
             longitude: 2.287592,
