@@ -74,8 +74,8 @@ export default function UserUpdate() {
 
   //check if userType have access
   const { data: userMe } = useMeQuery();
-  if(userMe?.me?.userType === "owner" || "default" || "certifiedOwner"){
-    return <p>Vous ne pouvez pas accéder à cette page.</p>
+  if (userMe?.me?.userType === "certifiedOwner") {
+    return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
   if (data === undefined || data === null) {
     return <p>page non disponible, Veuillez préciser un ID utilisateur </p>;

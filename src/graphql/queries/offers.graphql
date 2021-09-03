@@ -2,11 +2,13 @@ query Offers(
   $cityId: Float!
   $getCities: Boolean!
   $getDepartements: Boolean!
+  $ownerId: Float!
 ) {
   offers(
     cityId: $cityId
     getCities: $getCities
     getDepartements: $getDepartements
+    ownerId: $ownerId
   ) {
     ...BaseOffer
   }

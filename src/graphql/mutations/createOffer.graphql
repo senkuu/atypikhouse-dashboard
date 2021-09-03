@@ -1,0 +1,48 @@
+mutation createOffer(
+  $status: String!
+  $deleteReason: String!
+  $offerTypeId: Float!
+  $ownerId: Float!
+  $cityId: Float!
+  $priceHT: Float!
+  $priceTTC: Float!
+  $touristTax: Float!
+  $description: String!
+  $title: String!
+  $address: String!
+  $longitude: Float!
+  $latitude: Float!
+) {
+  createOffer(
+    status: $status
+    deleteReason: $deleteReason
+    offerTypeId: $offerTypeId
+    ownerId: $ownerId
+    cityId: $cityId
+    priceHT: $priceHT
+    priceTTC: $priceTTC
+    touristTax: $touristTax
+    description: $description
+    title: $title
+    address: $address
+    coordinates: { longitude: $longitude, latitude: $latitude }
+  ) {
+    id
+    title
+    description
+    address
+    owner {
+      id
+      name
+      surname
+    }
+    touristTax
+    priceHT
+    priceTTC
+    deleteReason
+    city {
+      id
+      name
+    }
+  }
+}

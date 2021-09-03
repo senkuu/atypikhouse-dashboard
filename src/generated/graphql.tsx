@@ -599,6 +599,25 @@ export type CreateBookingMutationVariables = Exact<{
 
 export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'Booking', id: number, status: string, startDate: any, endDate: any, adults: number, children: number, priceHT: number, priceTTC: number, cancelReason: string, occupant: { __typename?: 'User', id: number, name: string, surname: string, email: string } } };
 
+export type CreateOfferMutationVariables = Exact<{
+  status: Scalars['String'];
+  deleteReason: Scalars['String'];
+  offerTypeId: Scalars['Float'];
+  ownerId: Scalars['Float'];
+  cityId: Scalars['Float'];
+  priceHT: Scalars['Float'];
+  priceTTC: Scalars['Float'];
+  touristTax: Scalars['Float'];
+  description: Scalars['String'];
+  title: Scalars['String'];
+  address: Scalars['String'];
+  longitude: Scalars['Float'];
+  latitude: Scalars['Float'];
+}>;
+
+
+export type CreateOfferMutation = { __typename?: 'Mutation', createOffer: { __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, owner: { __typename?: 'User', id: number, name: string, surname: string }, city: { __typename?: 'City', id: number, name: string } } };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -665,6 +684,7 @@ export type OffersQueryVariables = Exact<{
   cityId: Scalars['Float'];
   getCities: Scalars['Boolean'];
   getDepartements: Scalars['Boolean'];
+  ownerId: Scalars['Float'];
 }>;
 
 
@@ -793,6 +813,80 @@ export function useCreateBookingMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateBookingMutationHookResult = ReturnType<typeof useCreateBookingMutation>;
 export type CreateBookingMutationResult = Apollo.MutationResult<CreateBookingMutation>;
 export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<CreateBookingMutation, CreateBookingMutationVariables>;
+export const CreateOfferDocument = gql`
+    mutation createOffer($status: String!, $deleteReason: String!, $offerTypeId: Float!, $ownerId: Float!, $cityId: Float!, $priceHT: Float!, $priceTTC: Float!, $touristTax: Float!, $description: String!, $title: String!, $address: String!, $longitude: Float!, $latitude: Float!) {
+  createOffer(
+    status: $status
+    deleteReason: $deleteReason
+    offerTypeId: $offerTypeId
+    ownerId: $ownerId
+    cityId: $cityId
+    priceHT: $priceHT
+    priceTTC: $priceTTC
+    touristTax: $touristTax
+    description: $description
+    title: $title
+    address: $address
+    coordinates: {longitude: $longitude, latitude: $latitude}
+  ) {
+    id
+    title
+    description
+    address
+    owner {
+      id
+      name
+      surname
+    }
+    touristTax
+    priceHT
+    priceTTC
+    deleteReason
+    city {
+      id
+      name
+    }
+  }
+}
+    `;
+export type CreateOfferMutationFn = Apollo.MutationFunction<CreateOfferMutation, CreateOfferMutationVariables>;
+
+/**
+ * __useCreateOfferMutation__
+ *
+ * To run a mutation, you first call `useCreateOfferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOfferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOfferMutation, { data, loading, error }] = useCreateOfferMutation({
+ *   variables: {
+ *      status: // value for 'status'
+ *      deleteReason: // value for 'deleteReason'
+ *      offerTypeId: // value for 'offerTypeId'
+ *      ownerId: // value for 'ownerId'
+ *      cityId: // value for 'cityId'
+ *      priceHT: // value for 'priceHT'
+ *      priceTTC: // value for 'priceTTC'
+ *      touristTax: // value for 'touristTax'
+ *      description: // value for 'description'
+ *      title: // value for 'title'
+ *      address: // value for 'address'
+ *      longitude: // value for 'longitude'
+ *      latitude: // value for 'latitude'
+ *   },
+ * });
+ */
+export function useCreateOfferMutation(baseOptions?: Apollo.MutationHookOptions<CreateOfferMutation, CreateOfferMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOfferMutation, CreateOfferMutationVariables>(CreateOfferDocument, options);
+      }
+export type CreateOfferMutationHookResult = ReturnType<typeof useCreateOfferMutation>;
+export type CreateOfferMutationResult = Apollo.MutationResult<CreateOfferMutation>;
+export type CreateOfferMutationOptions = Apollo.BaseMutationOptions<CreateOfferMutation, CreateOfferMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(options: {email: $email, password: $password}) {
@@ -1106,11 +1200,12 @@ export type OfferQueryHookResult = ReturnType<typeof useOfferQuery>;
 export type OfferLazyQueryHookResult = ReturnType<typeof useOfferLazyQuery>;
 export type OfferQueryResult = Apollo.QueryResult<OfferQuery, OfferQueryVariables>;
 export const OffersDocument = gql`
-    query Offers($cityId: Float!, $getCities: Boolean!, $getDepartements: Boolean!) {
+    query Offers($cityId: Float!, $getCities: Boolean!, $getDepartements: Boolean!, $ownerId: Float!) {
   offers(
     cityId: $cityId
     getCities: $getCities
     getDepartements: $getDepartements
+    ownerId: $ownerId
   ) {
     ...BaseOffer
   }
@@ -1132,6 +1227,7 @@ export const OffersDocument = gql`
  *      cityId: // value for 'cityId'
  *      getCities: // value for 'getCities'
  *      getDepartements: // value for 'getDepartements'
+ *      ownerId: // value for 'ownerId'
  *   },
  * });
  */

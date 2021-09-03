@@ -6,6 +6,8 @@ import UserCreate from "./components/UserCreate";
 import UserList from "./components/UserList";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserUpdate from "./components/UserUpdate";
+import PublishOffer from "./components/PublishOffer";
+import OwnerOffers from "./components/OwnerOffers";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
                 <Route path="/users" component={UserList} />
                 <Route path="/create" component={UserCreate} />
                 <Route path="/update" component={UserUpdate} />
+                <Route path="/publish" component={PublishOffer} />
+                <Route path="/offers" component={OwnerOffers} />
               </Switch>
             </Container>
           </Sidebar>

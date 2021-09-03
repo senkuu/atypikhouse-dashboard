@@ -20,7 +20,11 @@ import {
   Link,
   useRouteMatch,
 } from "react-router-dom";
-import { useMeQuery, useUpdateUserMutation, useUsersQuery } from "../../generated/graphql";
+import {
+  useMeQuery,
+  useUpdateUserMutation,
+  useUsersQuery,
+} from "../../generated/graphql";
 
 interface Values {
   id: number;
@@ -71,8 +75,8 @@ export default function UserList() {
     return alert("utilisateur archivé avec succès ");
   };
 
-  if(userMe?.me?.userType === "owner" || "default" || "certifiedOwner"){
-    return <p>Vous ne pouvez pas accéder à cette page.</p>
+  if (userMe?.me?.userType === "CertifiedOwner") {
+    return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
 
   return (
@@ -84,7 +88,7 @@ export default function UserList() {
               <Typography
                 component="h2"
                 variant="h6"
-                style={{color: "#222"}}
+                style={{ color: "#222" }}
                 gutterBottom
               >
                 Utilisateurs

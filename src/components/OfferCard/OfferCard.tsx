@@ -2,12 +2,12 @@ import React, { InputHTMLAttributes } from "react";
 import Icon from "@material-ui/core/Icon";
 import { Field, useField } from "formik";
 import { InputLabel, makeStyles } from "@material-ui/core";
+import { Offer } from "../../generated/graphql";
 
-type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-  name: string;
-  icon: string;
-};
+interface Props {
+  offer: Offer;
+}
+
 const useStyles = makeStyles((theme) => ({
   input: {
     width: "100%",
@@ -37,31 +37,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function InputField({ label, icon, ...props }: InputFieldProps) {
-  const [field] = useField(props);
+function OfferCard(props: Props) {
   const classes = useStyles();
   return (
     <div>
-      <InputLabel
-        htmlFor={field.name}
-        style={{ marginTop: "10px", fontSize: "12px" }}
-      >
-        {label}
-      </InputLabel>
-      <div style={{ display: "flex" }}>
-        <div className={classes.PositionIcon}>
-          <Icon>{icon}</Icon>
-        </div>
-        <Field
-          className={classes.input}
-          {...field}
-          {...props}
-          id={field.name}
-          placeholder={props.placeholder ?? ""}
-        />
-      </div>
+      <p>{props.offer.title}</p>
     </div>
   );
 }
 
-export default InputField;
+export default OfferCard;

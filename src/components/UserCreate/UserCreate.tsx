@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -67,8 +66,8 @@ export default function UserCreate() {
     console.log("un espoir");
   };
 
-  if(userMe?.me?.userType === "owner" || "default" || "certifiedOwner"){
-    return <p>Vous ne pouvez pas accéder à cette page.</p>
+  if (userMe?.me?.userType === "certifiedOwner") {
+    return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
 
   return (
