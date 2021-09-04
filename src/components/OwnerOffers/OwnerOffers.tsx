@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 import { Offer, useMeQuery, useOffersQuery } from "../../generated/graphql";
 import OfferCard from "../OfferCard";
 
@@ -61,8 +60,8 @@ export default function OwnerOffers() {
 
   return (
     <div>
-      {data!.offers.map((offer) => (
-        <div>
+      {data!.offers.map((offer, index) => (
+        <div key={index}>
           <OfferCard offer={offer as Offer} />
         </div>
       ))}

@@ -13,11 +13,17 @@ import TableRow from "@material-ui/core/TableRow";
 import Avatar from "@material-ui/core/Avatar";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core";
-import { Offer } from "../../generated/graphql";
+import { Offer, useUpdateOfferMutation } from "../../generated/graphql";
 import { Link } from "react-router-dom";
 
 interface Props {
   offer: Offer;
+}
+interface Values {
+  id: number;
+  status: string;
+  latitude: number;
+  longitude: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -54,6 +60,14 @@ const useStyles = makeStyles((theme) => ({
 
 function OfferCard(props: Props) {
   const classes = useStyles();
+
+  const [updateOffer] = useUpdateOfferMutation();
+
+  const OfferArchived = (values: Values) => {
+    updateOffer({ variables: values });
+    return alert("utilisateur archivé avec succès ");
+  };
+
   return (
     <div className={classes.root}>
       <Container className={classes.container} maxWidth="lg">
@@ -68,21 +82,6 @@ function OfferCard(props: Props) {
               >
                 {props.offer.title}
               </Typography>
-            </Box>
-            <Box>
-              <Link to="/create" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  style={{
-                    margin: "10px",
-                    background: "#2B463C",
-                    color: "white",
-                    outline: "0px",
-                  }}
-                >
-                  Ajouter
-                </Button>
-              </Link>
             </Box>
           </Box>
           <TableContainer component={Paper}>
@@ -110,16 +109,16 @@ function OfferCard(props: Props) {
                           aria-label="outlined primary button group"
                         >
                           <Link
-                            to={`update/${props.offer.id}`}
+                            to={`updateOffer/${props.offer.id}`}
                             className={classes.edit}
                           >
                             <Button>Modifier</Button>
                           </Link>
-                          <Link to="/users" className={classes.del}>
+                          <Link to="/offers" className={classes.del}>
                             <Button
-                              // onClick={() =>
-                              //   UserArchived({ id: users.id, status: "closed" })
-                              // }
+                               onClick={() =>
+                                OfferArchived({ id: props.offer.id, status: "DISABLED",  latitude: 48.862725, longitude: 2.287592,})
+                              }
                             >
                               Archivé
                             </Button>

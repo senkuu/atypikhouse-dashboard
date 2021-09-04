@@ -1,5 +1,33 @@
 query Offer($id: Float!) {
   offer(id: $id) {
-    ...BaseOffer
+    id
+    title
+    description
+    city {
+      name
+      id
+      departement {
+        number
+      }
+    }
+    distance
+    sortScore
+    averageRating
+    priceTTC
+    status
+    deleteReason
+    createdAt
+    touristTax
+    offerType {
+      id
+      name
+    }
+    owner {
+      name
+      id
+    }
+    latitude
+    longitude
+    address
   }
 }

@@ -577,7 +577,7 @@ export type UserResponse = {
 
 export type BaseErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
+export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
 
 export type BaseUserFragment = { __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string };
 
@@ -643,6 +643,25 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string }> } };
 
+export type UpdateOfferMutationVariables = Exact<{
+  id: Scalars['Float'];
+  status?: Maybe<Scalars['String']>;
+  deleteReason?: Maybe<Scalars['String']>;
+  offerTypeId?: Maybe<Scalars['Float']>;
+  ownerId?: Maybe<Scalars['Float']>;
+  priceHT?: Maybe<Scalars['Float']>;
+  priceTTC?: Maybe<Scalars['Float']>;
+  touristTax?: Maybe<Scalars['Float']>;
+  description?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  address?: Maybe<Scalars['String']>;
+  longitude: Scalars['Float'];
+  latitude: Scalars['Float'];
+}>;
+
+
+export type UpdateOfferMutation = { __typename?: 'Mutation', updateOffer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, city: { __typename?: 'City', id: number, name: string } }> };
+
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['Float'];
   website?: Maybe<Scalars['String']>;
@@ -678,7 +697,7 @@ export type OfferQueryVariables = Exact<{
 }>;
 
 
-export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
+export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, latitude?: Maybe<number>, longitude?: Maybe<number>, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string, id: number } }> };
 
 export type OffersQueryVariables = Exact<{
   cityId: Scalars['Float'];
@@ -688,7 +707,7 @@ export type OffersQueryVariables = Exact<{
 }>;
 
 
-export type OffersQuery = { __typename?: 'Query', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
+export type OffersQuery = { __typename?: 'Query', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
 
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {
@@ -709,6 +728,7 @@ export const BaseOfferFragmentDoc = gql`
   longitude
   priceTTC
   status
+  deleteReason
   createdAt
   touristTax
   offerType {
@@ -1006,6 +1026,75 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateOfferDocument = gql`
+    mutation updateOffer($id: Float!, $status: String, $deleteReason: String, $offerTypeId: Float, $ownerId: Float, $priceHT: Float, $priceTTC: Float, $touristTax: Float, $description: String, $title: String, $address: String, $longitude: Float!, $latitude: Float!) {
+  updateOffer(
+    id: $id
+    status: $status
+    deleteReason: $deleteReason
+    offerTypeId: $offerTypeId
+    ownerId: $ownerId
+    priceHT: $priceHT
+    priceTTC: $priceTTC
+    touristTax: $touristTax
+    description: $description
+    title: $title
+    address: $address
+    coordinates: {longitude: $longitude, latitude: $latitude}
+  ) {
+    id
+    title
+    description
+    address
+    touristTax
+    priceHT
+    priceTTC
+    deleteReason
+    city {
+      id
+      name
+    }
+  }
+}
+    `;
+export type UpdateOfferMutationFn = Apollo.MutationFunction<UpdateOfferMutation, UpdateOfferMutationVariables>;
+
+/**
+ * __useUpdateOfferMutation__
+ *
+ * To run a mutation, you first call `useUpdateOfferMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOfferMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOfferMutation, { data, loading, error }] = useUpdateOfferMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *      deleteReason: // value for 'deleteReason'
+ *      offerTypeId: // value for 'offerTypeId'
+ *      ownerId: // value for 'ownerId'
+ *      priceHT: // value for 'priceHT'
+ *      priceTTC: // value for 'priceTTC'
+ *      touristTax: // value for 'touristTax'
+ *      description: // value for 'description'
+ *      title: // value for 'title'
+ *      address: // value for 'address'
+ *      longitude: // value for 'longitude'
+ *      latitude: // value for 'latitude'
+ *   },
+ * });
+ */
+export function useUpdateOfferMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOfferMutation, UpdateOfferMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOfferMutation, UpdateOfferMutationVariables>(UpdateOfferDocument, options);
+      }
+export type UpdateOfferMutationHookResult = ReturnType<typeof useUpdateOfferMutation>;
+export type UpdateOfferMutationResult = Apollo.MutationResult<UpdateOfferMutation>;
+export type UpdateOfferMutationOptions = Apollo.BaseMutationOptions<UpdateOfferMutation, UpdateOfferMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation updateUser($id: Float!, $website: String, $description: String, $name: String, $surname: String, $email: String, $status: String) {
   updateUser(
@@ -1170,10 +1259,38 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const OfferDocument = gql`
     query Offer($id: Float!) {
   offer(id: $id) {
-    ...BaseOffer
+    id
+    title
+    description
+    city {
+      name
+      id
+      departement {
+        number
+      }
+    }
+    distance
+    sortScore
+    averageRating
+    priceTTC
+    status
+    deleteReason
+    createdAt
+    touristTax
+    offerType {
+      id
+      name
+    }
+    owner {
+      name
+      id
+    }
+    latitude
+    longitude
+    address
   }
 }
-    ${BaseOfferFragmentDoc}`;
+    `;
 
 /**
  * __useOfferQuery__

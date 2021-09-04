@@ -16,6 +16,7 @@ fragment BaseOffer on Offer {
   longitude
   priceTTC
   status
+  deleteReason
   createdAt
   touristTax
   offerType {

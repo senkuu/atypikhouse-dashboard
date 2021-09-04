@@ -1,0 +1,43 @@
+mutation updateOffer(
+  $id: Float!
+  $status: String
+  $deleteReason: String
+  $offerTypeId: Float
+  $ownerId: Float
+  $priceHT: Float
+  $priceTTC: Float
+  $touristTax: Float
+  $description: String
+  $title: String
+  $address: String
+  $longitude: Float!
+  $latitude: Float!
+) {
+  updateOffer(
+    id: $id
+    status: $status
+    deleteReason: $deleteReason
+    offerTypeId: $offerTypeId
+    ownerId: $ownerId
+    priceHT: $priceHT
+    priceTTC: $priceTTC
+    touristTax: $touristTax
+    description: $description
+    title: $title
+    address: $address
+    coordinates: { longitude: $longitude, latitude: $latitude }
+  ) {
+    id
+    title
+    description
+    address
+    touristTax
+    priceHT
+    priceTTC
+    deleteReason
+    city {
+      id
+      name
+    }
+  }
+}
