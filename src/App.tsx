@@ -11,6 +11,7 @@ import OwnerOffers from "./components/OwnerOffers";
 import OfferUpdate from "./components/OfferUpdate";
 import AdminOffers from "./components/AdminOffers";
 import WaitingOffers from "./components/WaitingOffers";
+import DisabledOffers from "./components/DisabledOffers";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
                   path="/offers_waiting_approval"
                   component={WaitingOffers}
                 />
+                <Route path="/offers_disabled" component={DisabledOffers} />
               </Switch>
             </Container>
           </Sidebar>

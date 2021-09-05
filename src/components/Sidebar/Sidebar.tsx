@@ -26,6 +26,7 @@ import {
   Group,
   AccessTime,
   CheckCircle,
+  Cancel,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import {
@@ -324,6 +325,17 @@ export default function Sidebar(props: props) {
                       <AccessTime />
                     </ListItemIcon>
                     <ListItemText>Les offres en attente</ListItemText>
+                  </ListItem>
+                </Link>
+                <Link
+                  to="/offers_disabled"
+                  style={{ textDecoration: "none", color: "#222" }}
+                >
+                  <ListItem>
+                    <ListItemIcon>
+                      <Cancel />
+                    </ListItemIcon>
+                    <ListItemText>Les offres archivées</ListItemText>
                   </ListItem>
                 </Link>
               </List>

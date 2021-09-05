@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import InputField from "../InputField";
 import { Formik, Form, Field } from "formik";
 import { useCreateOfferMutation, useMeQuery } from "../../generated/graphql";
+import { useApolloClient } from "@apollo/client";
 
 interface Values {
   status: string;
@@ -57,9 +58,11 @@ export default function PublishOffer() {
   const classes = useStyles();
   const [createOffer] = useCreateOfferMutation();
   const { data: userMe } = useMeQuery();
+  const apolloClient = useApolloClient();
 
   const handleFormSubmit = async (values: Values) => {
     const response = await createOffer({ variables: values });
+
     if (response === null) {
       return (
         <p>
@@ -68,7 +71,7 @@ export default function PublishOffer() {
         </p>
       );
     }
-    console.log(values);
+    apolloClient.resetStore();
   };
 
   if (userMe?.me?.userType === "owner") {

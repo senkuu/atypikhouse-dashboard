@@ -69,7 +69,7 @@ function OfferCard(props: Props) {
 
   const OfferArchived = (values: Values) => {
     updateOffer({ variables: values });
-    return alert("utilisateur archivé avec succès ");
+    return alert("offre archivé avec succès ");
   };
 
   return (
@@ -148,7 +148,7 @@ function OfferCard(props: Props) {
                           >
                             <Button>Modifier</Button>
                           </Link>
-                          <Link to="/offers" className={classes.del}>
+                          <Link to="/" className={classes.del}>
                             <Button
                               onClick={() =>
                                 OfferArchived({

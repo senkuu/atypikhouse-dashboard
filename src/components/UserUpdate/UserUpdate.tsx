@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    background: "#2B463C",
+    color: "white",
   },
 }));
 
@@ -127,7 +129,11 @@ export default function UserUpdate() {
       <>
         <Container maxWidth="md">
           <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
+            <Typography
+              component="h1"
+              variant="h5"
+              style={{ fontFamily: "Lora", marginBottom: "10px" }}
+            >
               Modifier profil utilisateur
             </Typography>
             <Formik
@@ -200,7 +206,6 @@ export default function UserUpdate() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
                     className={classes.submit}
                     // onClick={() => setAlert(true)}
                   >

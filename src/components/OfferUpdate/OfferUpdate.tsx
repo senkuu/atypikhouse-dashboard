@@ -13,6 +13,7 @@ import { Formik, Form, Field } from "formik";
 import InputField from "../InputField";
 import { InputLabel } from "@material-ui/core";
 import { useState } from "react";
+import { useApolloClient } from "@apollo/client";
 
 interface Values {
   id: number;
@@ -67,7 +68,7 @@ export default function OfferUpdate() {
       id: ID,
     },
   });
-
+  const apolloClient = useApolloClient();
   const [updateOffer] = useUpdateOfferMutation();
 
   const [changed, isChanged] = useState(false);
@@ -226,7 +227,6 @@ export default function OfferUpdate() {
                         name="address"
                         placeholder={data?.offer?.address || ""}
                         type="text"
-                        required
                       />
                     </Grid>
                   </Grid>
