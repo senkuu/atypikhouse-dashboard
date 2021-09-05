@@ -1,19 +1,18 @@
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   useMeQuery,
   useOfferQuery,
   useUpdateOfferMutation,
 } from "../../generated/graphql";
-import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import InputField from "../InputField";
 import { InputLabel } from "@material-ui/core";
+import { useState } from "react";
 
 interface Values {
   id: number;
@@ -61,7 +60,6 @@ export default function OfferUpdate() {
   const location = useLocation();
   const getLocation = location.pathname.split("updateOffer/")[1];
   const ID: number = parseInt(getLocation);
-  console.log(ID);
 
   const { data: userMe } = useMeQuery();
   const { data, loading: meLoading } = useOfferQuery({
@@ -72,11 +70,13 @@ export default function OfferUpdate() {
 
   const [updateOffer] = useUpdateOfferMutation();
 
+  const [changed, isChanged] = useState(false);
+
   if (userMe?.me?.userType === "owner") {
     return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
   if (data === undefined || data === null) {
-    return <p>page non disponible, Veuillez préciser un ID utilisateur </p>;
+    console.log("vide");
   }
 
   if (data?.offer?.id === ID && null) {
@@ -171,7 +171,7 @@ export default function OfferUpdate() {
                           fontSize: "12px",
                         }}
                       >
-                        Type d'utilisateur
+                        Statut de l'offre :
                       </InputLabel>
                       <Field
                         style={{
@@ -183,15 +183,16 @@ export default function OfferUpdate() {
                           borderWidth: "2px",
                           outline: "2px solid transparent",
                           outlineOffset: "2px",
-                          borderColor: "#222",
+                          borderColor: "#bdc3c7",
                           borderStyle: "solid",
                           height: "40px",
+                          fontFamily: "Lato",
                         }}
                         name="status"
                         as="select"
                         required
                       >
-                        <option value="AVAILABLE">available</option>
+                        <option value="AVAILABLE">Available</option>
                         <option value="DISABLED">Disabled</option>
                       </Field>
                     </Grid>
@@ -213,17 +214,34 @@ export default function OfferUpdate() {
                         required
                       />
                     </Grid>
+                    <Grid item xs={12}>
+                      <InputField
+                        icon="home"
+                        label="Modifier l'adresse..."
+                        name="address"
+                        placeholder={data?.offer?.address || ""}
+                        type="text"
+                        required
+                      />
+                    </Grid>
                   </Grid>
-                  
+
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     className={classes.submit}
+                    onClick={() => isChanged(true)}
                   >
                     Modifier votre annonce
                   </Button>
-
+                  {changed ? (
+                    <p style={{ textAlign: "center", color: "green" }}>
+                      modification prise en compte
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
                 </Form>
               )}
             </Formik>

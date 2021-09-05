@@ -49,20 +49,21 @@ export default function OwnerOffers() {
   }
 
   if (!data && loading) {
-    return <p>Loading</p>;
+    return <p>Chargement de la totalité des offres</p>;
   }
 
   if (data) {
     console.log(data.offers);
   }
 
-  if (data === undefined) console.log(data);
+  if (data === undefined) {
+  }
 
   return (
     <div>
       {data!.offers.map((offer, index) => (
         <div key={index}>
-          <OfferCard offer={offer as Offer} />
+          <OfferCard WithOut={false} offer={offer as Offer} />
         </div>
       ))}
     </div>

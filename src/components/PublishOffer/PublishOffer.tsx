@@ -62,7 +62,12 @@ export default function PublishOffer() {
   const handleFormSubmit = async (values: Values) => {
     const response = await createOffer({ variables: values });
     if (response === null) {
-      console.log("ça marche pas");
+      return (
+        <p>
+          Une erreur est survenue, veuillez réessayer plus tard ou contacter
+          notre service.
+        </p>
+      );
     }
     console.log(values);
   };
@@ -88,7 +93,7 @@ export default function PublishOffer() {
             touristTax: 0,
             description: "",
             title: "",
-            status: "AVAILABLE",
+            status: "WAITING_APPROVAL",
             address: "",
             latitude: 48.862725,
             longitude: 2.287592,
@@ -124,9 +129,11 @@ export default function PublishOffer() {
                       borderWidth: "1px",
                       outline: "2px solid transparent",
                       outlineOffset: "2px",
-                      borderColor: "#222",
+                      borderColor: "#bdc3c7",
                       borderStyle: "solid",
                       height: "80px",
+                      fontFamily: "Lato",
+                      padding: "10px",
                     }}
                     name="description"
                     placeholder="description de l'annonce"
@@ -136,7 +143,7 @@ export default function PublishOffer() {
                 </Grid>
                 <Grid item xs={12}>
                   <InputField
-                    icon="location_on"
+                    icon="home"
                     label="Adresse de votre annonce :"
                     name="address"
                     type="text"
@@ -157,8 +164,8 @@ export default function PublishOffer() {
                 <Grid item xs={12}>
                   <InputField
                     icon="euro"
-                    label="Prix TTC"
-                    name="priceTTC"
+                    label="Prix HT"
+                    name="priceHT"
                     type="number"
                     required
                   />
@@ -166,8 +173,8 @@ export default function PublishOffer() {
                 <Grid item xs={12}>
                   <InputField
                     icon="euro"
-                    label="Prix HT"
-                    name="priceHT"
+                    label="Prix TTC"
+                    name="priceTTC"
                     type="number"
                     required
                   />

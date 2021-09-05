@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -18,6 +18,7 @@ import { Link } from "react-router-dom";
 
 interface Props {
   offer: Offer;
+  WithOut: boolean;
 }
 interface Values {
   id: number;
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary,
-    boxShadow: "none"
+    boxShadow: "none",
   },
   edit: {
     textDecoration: "none",
@@ -55,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "#2B463C",
     background: "#e74c3c",
+  },
+  validate: {
+    textDecoration: "none",
+    color: "#2B463C",
+    background: "#688F4E",
   },
 }));
 
@@ -89,7 +95,9 @@ function OfferCard(props: Props) {
               <TableHead>
                 <TableRow>
                   <TableCell align="right">ID</TableCell>
-                  <TableCell align="center" style={{width: '20%'}}>title</TableCell>
+                  <TableCell align="center" style={{ width: "20%" }}>
+                    title
+                  </TableCell>
                   <TableCell align="left">priceTTC</TableCell>
                   <TableCell align="left">Taxe de séjour</TableCell>
                   <TableCell align="left">status </TableCell>
@@ -97,13 +105,41 @@ function OfferCard(props: Props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                    <TableRow key={props.offer.id}>
-                      <TableCell align="right">{props.offer.id}</TableCell>
-                      <TableCell align="center">{props.offer.title}</TableCell>
-                      <TableCell align="left">{props.offer.priceTTC}</TableCell>
-                      <TableCell align="left">{props.offer.touristTax}</TableCell>
-                      <TableCell align="left">{props.offer.status}</TableCell>
-                      <TableCell align="center">
+                <TableRow key={props.offer.id}>
+                  <TableCell align="right">{props.offer.id}</TableCell>
+                  <TableCell align="center">{props.offer.title}</TableCell>
+                  <TableCell align="left">{props.offer.priceTTC}</TableCell>
+                  <TableCell align="left">{props.offer.touristTax}</TableCell>
+                  <TableCell align="left">{props.offer.status}</TableCell>
+                  <TableCell align="center">
+                    {props.WithOut ? (
+                      props.offer.status === "WAITING_APPROVAL" ? (
+                        <ButtonGroup
+                          color="primary"
+                          aria-label="outlined primary button group"
+                        >
+                          <Link
+                            to={`updateOffer/${props.offer.id}`}
+                            className={classes.edit}
+                          >
+                            <Button>Modifier</Button>
+                          </Link>
+                          <Link to="/offers" className={classes.validate}>
+                            <Button
+                              onClick={() =>
+                                OfferArchived({
+                                  id: props.offer.id,
+                                  status: "AVAILABLE",
+                                  latitude: 48.862725,
+                                  longitude: 2.287592,
+                                })
+                              }
+                            >
+                              Validé
+                            </Button>
+                          </Link>
+                        </ButtonGroup>
+                      ) : (
                         <ButtonGroup
                           color="primary"
                           aria-label="outlined primary button group"
@@ -116,16 +152,39 @@ function OfferCard(props: Props) {
                           </Link>
                           <Link to="/offers" className={classes.del}>
                             <Button
-                               onClick={() =>
-                                OfferArchived({ id: props.offer.id, status: "DISABLED",  latitude: 48.862725, longitude: 2.287592,})
+                              onClick={() =>
+                                OfferArchived({
+                                  id: props.offer.id,
+                                  status: "DISABLED",
+                                  latitude: 48.862725,
+                                  longitude: 2.287592,
+                                })
                               }
                             >
                               Archivé
                             </Button>
                           </Link>
                         </ButtonGroup>
-                      </TableCell>
-                    </TableRow>
+                      )
+                    ) : (
+                      <></>
+                    )}
+                    {props.WithOut === false ? (
+                      <Link
+                        to={`updateOffer/${props.offer.id}`}
+                        className={classes.edit}
+                        style={{
+                          margin: "auto",
+                          padding: "10px",
+                        }}
+                      >
+                        <Button>Modifier</Button>
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
