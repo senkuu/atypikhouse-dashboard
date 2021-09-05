@@ -101,7 +101,11 @@ export default function OfferUpdate() {
       <>
         <Container maxWidth="md">
           <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
+            <Typography
+              component="h1"
+              variant="h5"
+              style={{ fontFamily: "Lora" }}
+            >
               Modifier annonce "{data.offer.title}"
             </Typography>
             <Formik
@@ -148,9 +152,10 @@ export default function OfferUpdate() {
                           borderWidth: "1px",
                           outline: "2px solid transparent",
                           outlineOffset: "2px",
-                          borderColor: "#222",
+                          borderColor: "#bdc3c7",
                           borderStyle: "solid",
                           height: "80px",
+                          fontFamily: "Lato",
                         }}
                         name="description"
                         placeholder={data?.offer?.description}

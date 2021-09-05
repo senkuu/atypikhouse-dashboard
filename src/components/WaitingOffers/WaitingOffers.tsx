@@ -8,6 +8,7 @@ export default function WaitingOffers() {
       cityId: 75056,
       getCities: true,
       getDepartements: true,
+      status: "WAITING_APPROVAL",
     },
   });
 

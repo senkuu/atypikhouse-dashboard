@@ -20,7 +20,14 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { LocalOffer, Publish, Mail, Group } from "@material-ui/icons";
+import {
+  LocalOffer,
+  Publish,
+  Mail,
+  Group,
+  AccessTime,
+  CheckCircle,
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import {
   useLoginMutation,
@@ -261,7 +268,10 @@ export default function Sidebar(props: props) {
             <Divider />
 
             <List>
-              <Link to="/publish" style={{ textDecoration: "none", color:"#222"}}>
+              <Link
+                to="/publish"
+                style={{ textDecoration: "none", color: "#222" }}
+              >
                 <ListItem>
                   <ListItemIcon>
                     <Publish />
@@ -269,7 +279,10 @@ export default function Sidebar(props: props) {
                   <ListItemText>Déposer une annonce</ListItemText>
                 </ListItem>
               </Link>
-              <Link to="/offers" style={{ textDecoration: "none", color:"#222"}}>
+              <Link
+                to="/offers"
+                style={{ textDecoration: "none", color: "#222" }}
+              >
                 <ListItem>
                   <ListItemIcon>
                     <LocalOffer />
@@ -279,25 +292,45 @@ export default function Sidebar(props: props) {
               </Link>
             </List>
             <Divider />
-            { data.me.userType === "admin" ? <List>
-              <Link to="/users" style={{ textDecoration: "none", color:"#222"}}>
-                <ListItem>
-                  <ListItemIcon>
-                    <Group />
-                  </ListItemIcon>
-                  <ListItemText>Les Utilisateurs</ListItemText>
-                </ListItem>
-              </Link>
-              <Link to="/offers_admin" style={{ textDecoration: "none", color:"#222"}}>
-                <ListItem>
-                  <ListItemIcon>
-                    <Mail />
-                  </ListItemIcon>
-                  <ListItemText>Les offres</ListItemText>
-                </ListItem>
-              </Link>
-            </List> : <></>}
-            
+            {data.me.userType === "admin" ? (
+              <List>
+                <Link
+                  to="/users"
+                  style={{ textDecoration: "none", color: "#222" }}
+                >
+                  <ListItem>
+                    <ListItemIcon>
+                      <Group />
+                    </ListItemIcon>
+                    <ListItemText>Les Utilisateurs</ListItemText>
+                  </ListItem>
+                </Link>
+                <Link
+                  to="/offers_available"
+                  style={{ textDecoration: "none", color: "#222" }}
+                >
+                  <ListItem>
+                    <ListItemIcon>
+                      <CheckCircle />
+                    </ListItemIcon>
+                    <ListItemText>Les offres validées</ListItemText>
+                  </ListItem>
+                </Link>
+                <Link
+                  to="/offers_waiting_approval"
+                  style={{ textDecoration: "none", color: "#222" }}
+                >
+                  <ListItem>
+                    <ListItemIcon>
+                      <AccessTime />
+                    </ListItemIcon>
+                    <ListItemText>Les offres en attente</ListItemText>
+                  </ListItem>
+                </Link>
+              </List>
+            ) : (
+              <></>
+            )}
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />

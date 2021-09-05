@@ -430,6 +430,7 @@ export type Query = {
 
 
 export type QueryOffersArgs = {
+  status?: Maybe<Scalars['String']>;
   ownerId?: Maybe<Scalars['Float']>;
   getDepartements?: Maybe<Scalars['Boolean']>;
   getCities?: Maybe<Scalars['Boolean']>;
@@ -704,6 +705,7 @@ export type OffersQueryVariables = Exact<{
   getCities: Scalars['Boolean'];
   getDepartements: Scalars['Boolean'];
   ownerId?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1320,12 +1322,13 @@ export type OfferQueryHookResult = ReturnType<typeof useOfferQuery>;
 export type OfferLazyQueryHookResult = ReturnType<typeof useOfferLazyQuery>;
 export type OfferQueryResult = Apollo.QueryResult<OfferQuery, OfferQueryVariables>;
 export const OffersDocument = gql`
-    query Offers($cityId: Float!, $getCities: Boolean!, $getDepartements: Boolean!, $ownerId: Float) {
+    query Offers($cityId: Float!, $getCities: Boolean!, $getDepartements: Boolean!, $ownerId: Float, $status: String) {
   offers(
     cityId: $cityId
     getCities: $getCities
     getDepartements: $getDepartements
     ownerId: $ownerId
+    status: $status
   ) {
     ...BaseOffer
   }
@@ -1348,6 +1351,7 @@ export const OffersDocument = gql`
  *      getCities: // value for 'getCities'
  *      getDepartements: // value for 'getDepartements'
  *      ownerId: // value for 'ownerId'
+ *      status: // value for 'status'
  *   },
  * });
  */

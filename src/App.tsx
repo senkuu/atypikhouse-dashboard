@@ -10,6 +10,7 @@ import PublishOffer from "./components/PublishOffer";
 import OwnerOffers from "./components/OwnerOffers";
 import OfferUpdate from "./components/OfferUpdate";
 import AdminOffers from "./components/AdminOffers";
+import WaitingOffers from "./components/WaitingOffers";
 
 function App() {
   return (
@@ -25,7 +26,11 @@ function App() {
                 <Route path="/publish" component={PublishOffer} />
                 <Route path="/offers" component={OwnerOffers} />
                 <Route path="/updateOffer" component={OfferUpdate} />
-                <Route path="/offers_admin" component={AdminOffers} />
+                <Route path="/offers_available" component={AdminOffers} />
+                <Route
+                  path="/offers_waiting_approval"
+                  component={WaitingOffers}
+                />
               </Switch>
             </Container>
           </Sidebar>

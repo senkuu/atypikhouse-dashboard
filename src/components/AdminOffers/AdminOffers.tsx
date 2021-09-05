@@ -8,6 +8,7 @@ export default function AdminOffers() {
       cityId: 75056,
       getCities: true,
       getDepartements: true,
+      status: "AVAILABLE",
     },
   });
 

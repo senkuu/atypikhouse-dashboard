@@ -73,7 +73,7 @@ export default function UserCreate() {
   return (
     <Container maxWidth="md">
       <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{ fontFamily: "Lora" }}>
           Création de compte :
         </Typography>
         <Formik
@@ -178,7 +178,7 @@ export default function UserCreate() {
                 variant="contained"
                 className={classes.submit}
               >
-                Create
+                Créer
               </Button>
             </Form>
           )}
