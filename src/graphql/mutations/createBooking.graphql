@@ -7,35 +7,45 @@ mutation createBooking(
   $offerId: Float!
   $priceTTC: Float!
   $priceHT: Float!
+  $touristTax: Float!
   $status: String!
   $cancelReason: String!
 ) {
   createBooking(
-    startDate: $startDate
-    endDate: $endDate
-    adults: $adults
-    children: $children
-    occupantId: $occupantId
-    offerId: $offerId
-    priceTTC: $priceTTC
-    priceHT: $priceHT
-    status: $status
-    cancelReason: $cancelReason
+    options: {
+      startDate: $startDate
+      endDate: $endDate
+      adults: $adults
+      children: $children
+      occupantId: $occupantId
+      offerId: $offerId
+      priceTTC: $priceTTC
+      priceHT: $priceHT
+      touristTax: $touristTax
+      status: $status
+      cancelReason: $cancelReason
+    }
   ) {
-    id
-    status
-    startDate
-    endDate
-    adults
-    children
-    priceHT
-    priceTTC
-    cancelReason
-    occupant {
+    errors {
+      ...BaseError
+    }
+    booking {
       id
-      name
-      surname
-      email
+      status
+      startDate
+      endDate
+      adults
+      children
+      priceHT
+      priceTTC
+      touristTax
+      cancelReason
+      occupant {
+        id
+        name
+        surname
+        email
+      }
     }
   }
 }

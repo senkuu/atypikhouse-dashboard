@@ -16,6 +16,13 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AddPlanningDataInput = {
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
+  ownerId?: Maybe<Scalars['Float']>;
+  offerId?: Maybe<Scalars['Float']>;
+};
+
 export type Booking = {
   __typename?: 'Booking';
   id: Scalars['Float'];
@@ -26,12 +33,19 @@ export type Booking = {
   children: Scalars['Float'];
   priceHT: Scalars['Float'];
   priceTTC: Scalars['Float'];
+  touristTax: Scalars['Float'];
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   status: Scalars['String'];
   cancelReason: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type BookingResponse = {
+  __typename?: 'BookingResponse';
+  errors?: Maybe<Array<FieldError>>;
+  booking?: Maybe<Booking>;
 };
 
 export type City = {
@@ -49,11 +63,46 @@ export type CoordinatesInput = {
   longitude: Scalars['Float'];
 };
 
+export type CreateBookingInput = {
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
+  offerId: Scalars['Float'];
+  occupantId: Scalars['Float'];
+  adults: Scalars['Float'];
+  children: Scalars['Float'];
+  priceHT: Scalars['Float'];
+  priceTTC: Scalars['Float'];
+  touristTax: Scalars['Float'];
+  status: Scalars['String'];
+  cancelReason?: Maybe<Scalars['String']>;
+};
+
+export type CreateOfferInput = {
+  title: Scalars['String'];
+  description: Scalars['String'];
+  coordinates?: Maybe<CoordinatesInput>;
+  address?: Maybe<Scalars['String']>;
+  touristTax: Scalars['Float'];
+  priceHT: Scalars['Float'];
+  priceTTC: Scalars['Float'];
+  cityId: Scalars['Float'];
+  ownerId: Scalars['Float'];
+  offerTypeId: Scalars['Float'];
+  deleteReason?: Maybe<Scalars['String']>;
+  status: Scalars['String'];
+};
+
+export type CreateOfferTypeInput = {
+  name: Scalars['String'];
+  criteriaIds?: Maybe<Array<Scalars['Float']>>;
+};
+
 export type Criteria = {
   __typename?: 'Criteria';
   id: Scalars['Float'];
   name: Scalars['String'];
   additional?: Maybe<Scalars['String']>;
+  isGlobal: Scalars['Boolean'];
   criteriaType: Scalars['String'];
   offerTypes?: Maybe<Array<OfferType>>;
   offerCriterias?: Maybe<Array<OfferCriteria>>;
@@ -89,10 +138,10 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createOffer: Offer;
-  updateOffer?: Maybe<Offer>;
+  createOffer: OfferResponse;
+  updateOffer: OfferResponse;
   addOfferCriterias?: Maybe<Offer>;
-  offer?: Maybe<Offer>;
+  removeOfferCriterias?: Maybe<Offer>;
   deleteOffer: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
@@ -101,8 +150,8 @@ export type Mutation = {
   changePassword: UserResponse;
   updateUser?: Maybe<UserResponse>;
   deleteUser: Scalars['Boolean'];
-  createBooking: Booking;
-  updateBooking?: Maybe<Booking>;
+  createBooking: BookingResponse;
+  updateBooking?: Maybe<BookingResponse>;
   deleteBooking: Scalars['Boolean'];
   createCriteria: Criteria;
   updateCriteria?: Maybe<Criteria>;
@@ -110,41 +159,23 @@ export type Mutation = {
   removeCriteriaOfferTypes?: Maybe<Criteria>;
   deleteCriteria: Scalars['Boolean'];
   createOfferType: OfferTypeResponse;
-  updateOfferType?: Maybe<OfferType>;
-  addOfferTypeCriterias?: Maybe<OfferType>;
-  removeOfferTypeCriterias?: Maybe<OfferType>;
+  updateOfferType: OfferTypeResponse;
+  addOfferTypeCriterias?: Maybe<OfferTypeResponse>;
+  removeOfferTypeCriterias?: Maybe<OfferTypeResponse>;
   deleteOfferType: Scalars['Boolean'];
+  addPlanningData: PlanningDataResponse;
+  updatePlanningData?: Maybe<PlanningDataResponse>;
+  removePlanningData: Scalars['Boolean'];
 };
 
 
 export type MutationCreateOfferArgs = {
-  status: Scalars['String'];
-  deleteReason: Scalars['String'];
-  offerTypeId: Scalars['Float'];
-  ownerId: Scalars['Float'];
-  cityId: Scalars['Float'];
-  priceTTC: Scalars['Float'];
-  priceHT: Scalars['Float'];
-  touristTax: Scalars['Float'];
-  address?: Maybe<Scalars['String']>;
-  coordinates?: Maybe<CoordinatesInput>;
-  description: Scalars['String'];
-  title: Scalars['String'];
+  options: CreateOfferInput;
 };
 
 
 export type MutationUpdateOfferArgs = {
-  deleteReason?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
-  offerTypeId?: Maybe<Scalars['Float']>;
-  ownerId?: Maybe<Scalars['Float']>;
-  priceTTC?: Maybe<Scalars['Float']>;
-  priceHT?: Maybe<Scalars['Float']>;
-  touristTax?: Maybe<Scalars['Float']>;
-  address?: Maybe<Scalars['String']>;
-  coordinates?: Maybe<CoordinatesInput>;
-  description?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
+  options: UpdateOfferInput;
   id: Scalars['Float'];
 };
 
@@ -155,8 +186,9 @@ export type MutationAddOfferCriteriasArgs = {
 };
 
 
-export type MutationOfferArgs = {
-  id: Scalars['Float'];
+export type MutationRemoveOfferCriteriasArgs = {
+  criteriaIds?: Maybe<Array<Scalars['Float']>>;
+  offerId: Scalars['Float'];
 };
 
 
@@ -206,24 +238,12 @@ export type MutationDeleteUserArgs = {
 
 
 export type MutationCreateBookingArgs = {
-  cancelReason: Scalars['String'];
-  status: Scalars['String'];
-  endDate: Scalars['DateTime'];
-  startDate: Scalars['DateTime'];
-  priceTTC: Scalars['Float'];
-  priceHT: Scalars['Float'];
-  children: Scalars['Float'];
-  adults: Scalars['Float'];
-  occupantId: Scalars['Float'];
-  offerId: Scalars['Float'];
+  options: CreateBookingInput;
 };
 
 
 export type MutationUpdateBookingArgs = {
-  cancelReason?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
-  endDate?: Maybe<Scalars['DateTime']>;
-  startDate?: Maybe<Scalars['DateTime']>;
+  options: UpdateBookingInput;
   id: Scalars['Float'];
 };
 
@@ -234,6 +254,7 @@ export type MutationDeleteBookingArgs = {
 
 
 export type MutationCreateCriteriaArgs = {
+  isGlobal: Scalars['Boolean'];
   criteriaType: Scalars['String'];
   offerTypeIds?: Maybe<Array<Scalars['Float']>>;
   additional?: Maybe<Scalars['String']>;
@@ -242,6 +263,7 @@ export type MutationCreateCriteriaArgs = {
 
 
 export type MutationUpdateCriteriaArgs = {
+  isGlobal?: Maybe<Scalars['Boolean']>;
   criteriaType?: Maybe<Scalars['String']>;
   offerTypeIds?: Maybe<Array<Scalars['Float']>>;
   additional?: Maybe<Scalars['String']>;
@@ -268,31 +290,45 @@ export type MutationDeleteCriteriaArgs = {
 
 
 export type MutationCreateOfferTypeArgs = {
-  criteriaIds?: Maybe<Array<Scalars['Float']>>;
-  name: Scalars['String'];
+  options: CreateOfferTypeInput;
 };
 
 
 export type MutationUpdateOfferTypeArgs = {
-  criteriaIds?: Maybe<Array<Scalars['Float']>>;
-  name?: Maybe<Scalars['String']>;
+  options: UpdateOfferTypeInput;
   id: Scalars['Float'];
 };
 
 
 export type MutationAddOfferTypeCriteriasArgs = {
-  criteriaIds?: Maybe<Array<Scalars['Float']>>;
+  criteriaIds: Array<Scalars['Float']>;
   id: Scalars['Float'];
 };
 
 
 export type MutationRemoveOfferTypeCriteriasArgs = {
-  criteriaIds?: Maybe<Array<Scalars['Float']>>;
+  criteriaIds: Array<Scalars['Float']>;
   id: Scalars['Float'];
 };
 
 
 export type MutationDeleteOfferTypeArgs = {
+  id: Scalars['Float'];
+};
+
+
+export type MutationAddPlanningDataArgs = {
+  options: AddPlanningDataInput;
+};
+
+
+export type MutationUpdatePlanningDataArgs = {
+  options: UpdatePlanningDataInput;
+  id: Scalars['Float'];
+};
+
+
+export type MutationRemovePlanningDataArgs = {
   id: Scalars['Float'];
 };
 
@@ -359,7 +395,8 @@ export type OfferCriteria = {
 
 export type OfferResponse = {
   __typename?: 'OfferResponse';
-  offers: Array<Offer>;
+  errors?: Maybe<Array<FieldError>>;
+  offer?: Maybe<Offer>;
 };
 
 export type OfferType = {
@@ -381,28 +418,44 @@ export type OfferTypeResponse = {
 export type Photo = {
   __typename?: 'Photo';
   id: Scalars['Float'];
-  filename: Scalars['String'];
   url: Scalars['String'];
-  mimetype: Scalars['String'];
+  user?: Maybe<User>;
+  description?: Maybe<Scalars['String']>;
+  booking?: Maybe<Booking>;
   offer?: Maybe<Offer>;
+  photoType: PhotoType;
+};
+
+export type PhotoType = {
+  __typename?: 'PhotoType';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Planning = {
   __typename?: 'Planning';
   id: Scalars['Float'];
-  offer: Offer;
-  name: Scalars['String'];
-  description: Scalars['String'];
+  offer?: Maybe<Offer>;
+  owner?: Maybe<User>;
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
 
+export type PlanningDataResponse = {
+  __typename?: 'PlanningDataResponse';
+  errors?: Maybe<Array<FieldError>>;
+  planningData?: Maybe<Planning>;
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  offers: OfferResponse;
+  offers: SearchOfferResponse;
   offer?: Maybe<Offer>;
   me?: Maybe<User>;
   users: Array<User>;
@@ -419,6 +472,7 @@ export type Query = {
   region?: Maybe<Region>;
   departements?: Maybe<Array<Departement>>;
   departement?: Maybe<Departement>;
+  plannings?: Maybe<Array<Planning>>;
 };
 
 
@@ -525,6 +579,11 @@ export type QueryDepartementArgs = {
   id?: Maybe<Scalars['Float']>;
 };
 
+
+export type QueryPlanningsArgs = {
+  options: SearchPlanningDataInput;
+};
+
 export type Region = {
   __typename?: 'Region';
   id: Scalars['Float'];
@@ -551,6 +610,53 @@ export type Review = {
   updatedAt: Scalars['String'];
 };
 
+export type SearchOfferResponse = {
+  __typename?: 'SearchOfferResponse';
+  offers: Array<Offer>;
+};
+
+export type SearchPlanningDataInput = {
+  ownerId?: Maybe<Scalars['Float']>;
+  offerId?: Maybe<Scalars['Float']>;
+};
+
+export type UpdateBookingInput = {
+  startDate?: Maybe<Scalars['DateTime']>;
+  endDate?: Maybe<Scalars['DateTime']>;
+  adults?: Maybe<Scalars['Float']>;
+  children?: Maybe<Scalars['Float']>;
+  priceHT?: Maybe<Scalars['Float']>;
+  priceTTC?: Maybe<Scalars['Float']>;
+  touristTax?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['String']>;
+  cancelReason?: Maybe<Scalars['String']>;
+};
+
+export type UpdateOfferInput = {
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  coordinates?: Maybe<CoordinatesInput>;
+  address?: Maybe<Scalars['String']>;
+  touristTax?: Maybe<Scalars['Float']>;
+  priceHT?: Maybe<Scalars['Float']>;
+  priceTTC?: Maybe<Scalars['Float']>;
+  cityId?: Maybe<Scalars['Float']>;
+  ownerId?: Maybe<Scalars['Float']>;
+  offerTypeId?: Maybe<Scalars['Float']>;
+  deleteReason?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+};
+
+export type UpdateOfferTypeInput = {
+  name?: Maybe<Scalars['String']>;
+  criteriaIds?: Maybe<Array<Scalars['Float']>>;
+};
+
+export type UpdatePlanningDataInput = {
+  startDate?: Maybe<Scalars['DateTime']>;
+  endDate?: Maybe<Scalars['DateTime']>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['Float'];
@@ -565,6 +671,7 @@ export type User = {
   notices?: Maybe<Array<Notice>>;
   linkedNotices?: Maybe<Array<Notice>>;
   photo?: Maybe<Photo>;
+  planningData?: Maybe<Array<Planning>>;
   userType: Scalars['String'];
   status: Scalars['String'];
   createdAt: Scalars['String'];
@@ -594,12 +701,13 @@ export type CreateBookingMutationVariables = Exact<{
   offerId: Scalars['Float'];
   priceTTC: Scalars['Float'];
   priceHT: Scalars['Float'];
+  touristTax: Scalars['Float'];
   status: Scalars['String'];
   cancelReason: Scalars['String'];
 }>;
 
 
-export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'Booking', id: number, status: string, startDate: any, endDate: any, adults: number, children: number, priceHT: number, priceTTC: number, cancelReason: string, occupant: { __typename?: 'User', id: number, name: string, surname: string, email: string } } };
+export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'BookingResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, booking?: Maybe<{ __typename?: 'Booking', id: number, status: string, startDate: any, endDate: any, adults: number, children: number, priceHT: number, priceTTC: number, touristTax: number, cancelReason: string, occupant: { __typename?: 'User', id: number, name: string, surname: string, email: string } }> } };
 
 export type CreateOfferMutationVariables = Exact<{
   status: Scalars['String'];
@@ -618,7 +726,7 @@ export type CreateOfferMutationVariables = Exact<{
 }>;
 
 
-export type CreateOfferMutation = { __typename?: 'Mutation', createOffer: { __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, owner: { __typename?: 'User', id: number, name: string, surname: string }, city: { __typename?: 'City', id: number, name: string } } };
+export type CreateOfferMutation = { __typename?: 'Mutation', createOffer: { __typename?: 'OfferResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, owner: { __typename?: 'User', id: number, name: string, surname: string }, city: { __typename?: 'City', id: number, name: string } }> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -662,7 +770,7 @@ export type UpdateOfferMutationVariables = Exact<{
 }>;
 
 
-export type UpdateOfferMutation = { __typename?: 'Mutation', updateOffer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, city: { __typename?: 'City', id: number, name: string } }> };
+export type UpdateOfferMutation = { __typename?: 'Mutation', updateOffer: { __typename?: 'OfferResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, city: { __typename?: 'City', id: number, name: string } }> } };
 
 export type UpdateUserMutationVariables = Exact<{
   id: Scalars['Float'];
@@ -710,7 +818,7 @@ export type OffersQueryVariables = Exact<{
 }>;
 
 
-export type OffersQuery = { __typename?: 'Query', offers: { __typename?: 'OfferResponse', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> } };
+export type OffersQuery = { __typename?: 'Query', offers: { __typename?: 'SearchOfferResponse', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> } };
 
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {
@@ -778,37 +886,34 @@ export const BaseUserResponseFragmentDoc = gql`
     ${BaseErrorFragmentDoc}
 ${BaseUserFragmentDoc}`;
 export const CreateBookingDocument = gql`
-    mutation createBooking($startDate: DateTime!, $endDate: DateTime!, $adults: Float!, $children: Float!, $occupantId: Float!, $offerId: Float!, $priceTTC: Float!, $priceHT: Float!, $status: String!, $cancelReason: String!) {
+    mutation createBooking($startDate: DateTime!, $endDate: DateTime!, $adults: Float!, $children: Float!, $occupantId: Float!, $offerId: Float!, $priceTTC: Float!, $priceHT: Float!, $touristTax: Float!, $status: String!, $cancelReason: String!) {
   createBooking(
-    startDate: $startDate
-    endDate: $endDate
-    adults: $adults
-    children: $children
-    occupantId: $occupantId
-    offerId: $offerId
-    priceTTC: $priceTTC
-    priceHT: $priceHT
-    status: $status
-    cancelReason: $cancelReason
+    options: {startDate: $startDate, endDate: $endDate, adults: $adults, children: $children, occupantId: $occupantId, offerId: $offerId, priceTTC: $priceTTC, priceHT: $priceHT, touristTax: $touristTax, status: $status, cancelReason: $cancelReason}
   ) {
-    id
-    status
-    startDate
-    endDate
-    adults
-    children
-    priceHT
-    priceTTC
-    cancelReason
-    occupant {
+    errors {
+      ...BaseError
+    }
+    booking {
       id
-      name
-      surname
-      email
+      status
+      startDate
+      endDate
+      adults
+      children
+      priceHT
+      priceTTC
+      touristTax
+      cancelReason
+      occupant {
+        id
+        name
+        surname
+        email
+      }
     }
   }
 }
-    `;
+    ${BaseErrorFragmentDoc}`;
 export type CreateBookingMutationFn = Apollo.MutationFunction<CreateBookingMutation, CreateBookingMutationVariables>;
 
 /**
@@ -832,6 +937,7 @@ export type CreateBookingMutationFn = Apollo.MutationFunction<CreateBookingMutat
  *      offerId: // value for 'offerId'
  *      priceTTC: // value for 'priceTTC'
  *      priceHT: // value for 'priceHT'
+ *      touristTax: // value for 'touristTax'
  *      status: // value for 'status'
  *      cancelReason: // value for 'cancelReason'
  *   },
@@ -847,39 +953,33 @@ export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<CreateBook
 export const CreateOfferDocument = gql`
     mutation createOffer($status: String!, $deleteReason: String!, $offerTypeId: Float!, $ownerId: Float!, $cityId: Float!, $priceHT: Float!, $priceTTC: Float!, $touristTax: Float!, $description: String!, $title: String!, $address: String!, $longitude: Float!, $latitude: Float!) {
   createOffer(
-    status: $status
-    deleteReason: $deleteReason
-    offerTypeId: $offerTypeId
-    ownerId: $ownerId
-    cityId: $cityId
-    priceHT: $priceHT
-    priceTTC: $priceTTC
-    touristTax: $touristTax
-    description: $description
-    title: $title
-    address: $address
-    coordinates: {longitude: $longitude, latitude: $latitude}
+    options: {status: $status, deleteReason: $deleteReason, offerTypeId: $offerTypeId, ownerId: $ownerId, cityId: $cityId, priceHT: $priceHT, priceTTC: $priceTTC, touristTax: $touristTax, description: $description, title: $title, address: $address, coordinates: {longitude: $longitude, latitude: $latitude}}
   ) {
-    id
-    title
-    description
-    address
-    owner {
-      id
-      name
-      surname
+    errors {
+      ...BaseError
     }
-    touristTax
-    priceHT
-    priceTTC
-    deleteReason
-    city {
+    offer {
       id
-      name
+      title
+      description
+      address
+      owner {
+        id
+        name
+        surname
+      }
+      touristTax
+      priceHT
+      priceTTC
+      deleteReason
+      city {
+        id
+        name
+      }
     }
   }
 }
-    `;
+    ${BaseErrorFragmentDoc}`;
 export type CreateOfferMutationFn = Apollo.MutationFunction<CreateOfferMutation, CreateOfferMutationVariables>;
 
 /**
@@ -1038,33 +1138,28 @@ export const UpdateOfferDocument = gql`
     mutation updateOffer($id: Float!, $status: String, $deleteReason: String, $offerTypeId: Float, $ownerId: Float, $priceHT: Float, $priceTTC: Float, $touristTax: Float, $description: String, $title: String, $address: String, $longitude: Float!, $latitude: Float!) {
   updateOffer(
     id: $id
-    status: $status
-    deleteReason: $deleteReason
-    offerTypeId: $offerTypeId
-    ownerId: $ownerId
-    priceHT: $priceHT
-    priceTTC: $priceTTC
-    touristTax: $touristTax
-    description: $description
-    title: $title
-    address: $address
-    coordinates: {longitude: $longitude, latitude: $latitude}
+    options: {status: $status, deleteReason: $deleteReason, offerTypeId: $offerTypeId, ownerId: $ownerId, priceHT: $priceHT, priceTTC: $priceTTC, touristTax: $touristTax, description: $description, title: $title, address: $address, coordinates: {longitude: $longitude, latitude: $latitude}}
   ) {
-    id
-    title
-    description
-    address
-    touristTax
-    priceHT
-    priceTTC
-    deleteReason
-    city {
+    errors {
+      ...BaseError
+    }
+    offer {
       id
-      name
+      title
+      description
+      address
+      touristTax
+      priceHT
+      priceTTC
+      deleteReason
+      city {
+        id
+        name
+      }
     }
   }
 }
-    `;
+    ${BaseErrorFragmentDoc}`;
 export type UpdateOfferMutationFn = Apollo.MutationFunction<UpdateOfferMutation, UpdateOfferMutationVariables>;
 
 /**

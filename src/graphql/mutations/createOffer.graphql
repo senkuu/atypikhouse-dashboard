@@ -14,35 +14,42 @@ mutation createOffer(
   $latitude: Float!
 ) {
   createOffer(
-    status: $status
-    deleteReason: $deleteReason
-    offerTypeId: $offerTypeId
-    ownerId: $ownerId
-    cityId: $cityId
-    priceHT: $priceHT
-    priceTTC: $priceTTC
-    touristTax: $touristTax
-    description: $description
-    title: $title
-    address: $address
-    coordinates: { longitude: $longitude, latitude: $latitude }
-  ) {
-    id
-    title
-    description
-    address
-    owner {
-      id
-      name
-      surname
+    options: {
+      status: $status
+      deleteReason: $deleteReason
+      offerTypeId: $offerTypeId
+      ownerId: $ownerId
+      cityId: $cityId
+      priceHT: $priceHT
+      priceTTC: $priceTTC
+      touristTax: $touristTax
+      description: $description
+      title: $title
+      address: $address
+      coordinates: { longitude: $longitude, latitude: $latitude }
     }
-    touristTax
-    priceHT
-    priceTTC
-    deleteReason
-    city {
+  ) {
+    errors {
+      ...BaseError
+    }
+    offer {
       id
-      name
+      title
+      description
+      address
+      owner {
+        id
+        name
+        surname
+      }
+      touristTax
+      priceHT
+      priceTTC
+      deleteReason
+      city {
+        id
+        name
+      }
     }
   }
 }

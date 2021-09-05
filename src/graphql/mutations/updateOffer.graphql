@@ -14,30 +14,37 @@ mutation updateOffer(
   $latitude: Float!
 ) {
   updateOffer(
-    id: $id
-    status: $status
-    deleteReason: $deleteReason
-    offerTypeId: $offerTypeId
-    ownerId: $ownerId
-    priceHT: $priceHT
-    priceTTC: $priceTTC
-    touristTax: $touristTax
-    description: $description
-    title: $title
-    address: $address
-    coordinates: { longitude: $longitude, latitude: $latitude }
+    id: $id,
+    options: {
+      status: $status
+      deleteReason: $deleteReason
+      offerTypeId: $offerTypeId
+      ownerId: $ownerId
+      priceHT: $priceHT
+      priceTTC: $priceTTC
+      touristTax: $touristTax
+      description: $description
+      title: $title
+      address: $address
+      coordinates: { longitude: $longitude, latitude: $latitude }
+    }
   ) {
-    id
-    title
-    description
-    address
-    touristTax
-    priceHT
-    priceTTC
-    deleteReason
-    city {
+    errors {
+      ...BaseError
+    }
+    offer {
       id
-      name
+      title
+      description
+      address
+      touristTax
+      priceHT
+      priceTTC
+      deleteReason
+      city {
+        id
+        name
+      }
     }
   }
 }
