@@ -9,8 +9,11 @@ import {
   useUpdateUserMutation,
   useUserQuery,
 } from "../../generated/graphql";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import InputField from "../InputField";
+import { InputLabel } from "@material-ui/core";
+import { useApolloClient } from "@apollo/client";
+import { useState } from "react";
 
 interface Values {
   id: number;
@@ -19,6 +22,7 @@ interface Values {
   name: string;
   surname: string;
   email: string;
+  status: string;
   //   city: string;
 }
 
@@ -55,6 +59,9 @@ const useStyles = makeStyles((theme) => ({
 export default function UserUpdate() {
   // get user id from pathname.
   const classes = useStyles();
+
+  const apolloClient = useApolloClient();
+  const [changed, isChanged] = useState(false);
 
   const location = useLocation();
   const getLocation = location.pathname.split("update/")[1];
@@ -112,7 +119,7 @@ export default function UserUpdate() {
 
   const handleFormSubmit = async (values: Values) => {
     const response = await updateUser({ variables: values });
-    console.log(response);
+    apolloClient.resetStore();
   };
 
   let body = null;
@@ -144,6 +151,7 @@ export default function UserUpdate() {
                 name: data!.user!.name,
                 surname: data!.user!.surname,
                 email: data!.user!.email,
+                status: data!.user.status,
                 // city: "",
               }}
               onSubmit={handleFormSubmit}
@@ -158,7 +166,6 @@ export default function UserUpdate() {
                         name="website"
                         type="text"
                         placeholder="nomdedomaine.com"
-                        required
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -168,7 +175,6 @@ export default function UserUpdate() {
                         name="description"
                         type="text"
                         placeholder="Raconter nous comment vous êtes unique."
-                        required
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -201,17 +207,64 @@ export default function UserUpdate() {
                         required
                       />
                     </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <InputLabel
+                        htmlFor="userType"
+                        style={{
+                          marginRight: "10px",
+                          marginTop: "15px",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Statut de l'offre :
+                      </InputLabel>
+                      <Field
+                        style={{
+                          width: "50%",
+                          display: "flex",
+                          paddingLeft: "0.5rem",
+                          paddingRight: "0.75rem",
+                          borderRadius: "0.5rem",
+                          borderWidth: "2px",
+                          outline: "2px solid transparent",
+                          outlineOffset: "2px",
+                          borderColor: "#bdc3c7",
+                          borderStyle: "solid",
+                          height: "40px",
+                          fontFamily: "Lato",
+                        }}
+                        name="status"
+                        as="select"
+                        required
+                      >
+                        <option value="activated">activated</option>
+                        <option value="activationPending">
+                          activationPending
+                        </option>
+                        <option value="closed">closed</option>
+                      </Field>
+                    </Grid>
                   </Grid>
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     className={classes.submit}
-                    // onClick={() => setAlert(true)}
+                    onClick={() => isChanged(true)}
                   >
                     Modifier
                   </Button>
-                  {/* {alert ? <p>modification effectuer</p> : <></>} */}
+                  {changed ? (
+                    <p style={{ textAlign: "center", color: "green" }}>
+                      modification prise en compte
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
                 </Form>
               )}
             </Formik>
