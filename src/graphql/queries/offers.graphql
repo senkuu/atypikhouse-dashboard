@@ -12,6 +12,8 @@ query Offers(
     ownerId: $ownerId
     status: $status
   ) {
-    ...BaseOffer
+    offers {
+      ...BaseOffer
+    }
   }
 }

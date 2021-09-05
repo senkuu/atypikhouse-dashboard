@@ -29,7 +29,7 @@ export default function DisabledOffers() {
 
   return (
     <div>
-      {data!.offers.map((offer, index) => (
+      {data!.offers.offers.map((offer, index) => (
         <div key={index}>
           <OfferCard WithOut={true} offer={offer as Offer} />
         </div>

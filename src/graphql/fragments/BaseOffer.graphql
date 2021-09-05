@@ -9,6 +9,10 @@ fragment BaseOffer on Offer {
       number
     }
   }
+  photos {
+    id
+    url
+  }
   distance
   sortScore
   averageRating
@@ -26,4 +30,5 @@ fragment BaseOffer on Offer {
   owner {
     name
   }
+  address
 }

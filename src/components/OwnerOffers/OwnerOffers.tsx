@@ -29,7 +29,7 @@ export default function OwnerOffers() {
 
   return (
     <div>
-      {data!.offers.map((offer, index) => (
+      {data!.offers.offers.map((offer, index) => (
         <div key={index}>
           <OfferCard WithOut={false} offer={offer as Offer} />
         </div>

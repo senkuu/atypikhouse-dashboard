@@ -92,7 +92,7 @@ export type Mutation = {
   createOffer: Offer;
   updateOffer?: Maybe<Offer>;
   addOfferCriterias?: Maybe<Offer>;
-  removeOfferCriterias?: Maybe<Offer>;
+  offer?: Maybe<Offer>;
   deleteOffer: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
@@ -155,9 +155,8 @@ export type MutationAddOfferCriteriasArgs = {
 };
 
 
-export type MutationRemoveOfferCriteriasArgs = {
-  criteriaIds?: Maybe<Array<Scalars['Float']>>;
-  offerId: Scalars['Float'];
+export type MutationOfferArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -358,6 +357,11 @@ export type OfferCriteria = {
   criteria: Criteria;
 };
 
+export type OfferResponse = {
+  __typename?: 'OfferResponse';
+  offers: Array<Offer>;
+};
+
 export type OfferType = {
   __typename?: 'OfferType';
   id: Scalars['Float'];
@@ -377,21 +381,10 @@ export type OfferTypeResponse = {
 export type Photo = {
   __typename?: 'Photo';
   id: Scalars['Float'];
+  filename: Scalars['String'];
   url: Scalars['String'];
-  user?: Maybe<User>;
-  description?: Maybe<Scalars['String']>;
-  booking?: Maybe<Booking>;
+  mimetype: Scalars['String'];
   offer?: Maybe<Offer>;
-  photoType: PhotoType;
-};
-
-export type PhotoType = {
-  __typename?: 'PhotoType';
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
 };
 
 export type Planning = {
@@ -409,12 +402,12 @@ export type Planning = {
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  offers: Array<Offer>;
+  offers: OfferResponse;
   offer?: Maybe<Offer>;
   me?: Maybe<User>;
   users: Array<User>;
   user?: Maybe<User>;
-  bookings: Array<Booking>;
+  bookings?: Maybe<Array<Booking>>;
   booking?: Maybe<Booking>;
   criterias: Array<Criteria>;
   criteria?: Maybe<Criteria>;
@@ -451,6 +444,14 @@ export type QueryUsersArgs = {
 
 export type QueryUserArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryBookingsArgs = {
+  hideCancelled?: Maybe<Scalars['Boolean']>;
+  ownerId?: Maybe<Scalars['Float']>;
+  occupantId?: Maybe<Scalars['Float']>;
+  offerId?: Maybe<Scalars['Float']>;
 };
 
 
@@ -578,7 +579,7 @@ export type UserResponse = {
 
 export type BaseErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
+export type BaseOfferFragment = { __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } };
 
 export type BaseUserFragment = { __typename?: 'User', id: number, name: string, surname: string, email: string, description?: Maybe<string>, website?: Maybe<string>, userType: string, status: string };
 
@@ -698,7 +699,7 @@ export type OfferQueryVariables = Exact<{
 }>;
 
 
-export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, latitude?: Maybe<number>, longitude?: Maybe<number>, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string, id: number } }> };
+export type OfferQuery = { __typename?: 'Query', offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
 
 export type OffersQueryVariables = Exact<{
   cityId: Scalars['Float'];
@@ -709,7 +710,7 @@ export type OffersQueryVariables = Exact<{
 }>;
 
 
-export type OffersQuery = { __typename?: 'Query', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> };
+export type OffersQuery = { __typename?: 'Query', offers: { __typename?: 'OfferResponse', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city: { __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> } };
 
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {
@@ -722,6 +723,10 @@ export const BaseOfferFragmentDoc = gql`
     departement {
       number
     }
+  }
+  photos {
+    id
+    url
   }
   distance
   sortScore
@@ -740,6 +745,7 @@ export const BaseOfferFragmentDoc = gql`
   owner {
     name
   }
+  address
 }
     `;
 export const BaseErrorFragmentDoc = gql`
@@ -1261,38 +1267,10 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const OfferDocument = gql`
     query Offer($id: Float!) {
   offer(id: $id) {
-    id
-    title
-    description
-    city {
-      name
-      id
-      departement {
-        number
-      }
-    }
-    distance
-    sortScore
-    averageRating
-    priceTTC
-    status
-    deleteReason
-    createdAt
-    touristTax
-    offerType {
-      id
-      name
-    }
-    owner {
-      name
-      id
-    }
-    latitude
-    longitude
-    address
+    ...BaseOffer
   }
 }
-    `;
+    ${BaseOfferFragmentDoc}`;
 
 /**
  * __useOfferQuery__
@@ -1330,7 +1308,9 @@ export const OffersDocument = gql`
     ownerId: $ownerId
     status: $status
   ) {
-    ...BaseOffer
+    offers {
+      ...BaseOffer
+    }
   }
 }
     ${BaseOfferFragmentDoc}`;
