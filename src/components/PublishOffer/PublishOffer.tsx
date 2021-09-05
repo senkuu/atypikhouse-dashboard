@@ -6,7 +6,6 @@ import Container from "@material-ui/core/Container";
 import InputField from "../InputField";
 import { Formik, Form, Field } from "formik";
 import { useCreateOfferMutation, useMeQuery } from "../../generated/graphql";
-import { useApolloClient } from "@apollo/client";
 
 interface Values {
   status: string;

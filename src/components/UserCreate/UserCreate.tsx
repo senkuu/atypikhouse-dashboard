@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import InputField from "../InputField";
-import { useApolloClient } from "@apollo/client";
 import { Formik, Form, Field } from "formik";
 import { useMeQuery, useRegisterMutation } from "../../generated/graphql";
 import { InputLabel } from "@material-ui/core";
@@ -50,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 export default function UserCreate() {
   const classes = useStyles();
 
-  const apolloClient = useApolloClient();
   const [register] = useRegisterMutation();
   const { data: userMe } = useMeQuery();
 

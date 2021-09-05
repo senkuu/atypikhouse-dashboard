@@ -3,7 +3,7 @@ import OfferCard from "../OfferCard";
 
 export default function AdminOffers() {
   const { data: userMe } = useMeQuery();
-  const { data, loading, error } = useOffersQuery({
+  const { data, loading } = useOffersQuery({
     variables: {
       cityId: 75056,
       getCities: true,

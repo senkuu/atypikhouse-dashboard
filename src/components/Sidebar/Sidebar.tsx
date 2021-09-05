@@ -23,7 +23,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   LocalOffer,
   Publish,
-  Mail,
   Group,
   AccessTime,
   CheckCircle,

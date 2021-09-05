@@ -1,4 +1,3 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -13,13 +12,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Avatar from "@material-ui/core/Avatar";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   useMeQuery,
   useUpdateUserMutation,
@@ -65,10 +58,9 @@ const useStyles = makeStyles((theme) => ({
 export default function UserList() {
   // const data = [{userid: 1, surname:"John", name:"Doe", age:50, creationDate: "28/03/2000"},{userid: 2, surname:"Jean", name:"Doe", age:50,creationDate: "28/03/2000"},{userid: 3, surname:"Fred", name:"Doe", age:50,creationDate: "28/03/2000"}];
   const classes = useStyles();
-  const { data, loading: meLoading } = useUsersQuery();
+  const { data } = useUsersQuery();
   const { data: userMe } = useMeQuery();
   const [updateUser] = useUpdateUserMutation();
-  let match = useRouteMatch();
 
   const UserArchived = (values: Values) => {
     updateUser({ variables: values });
