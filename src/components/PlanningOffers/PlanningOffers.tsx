@@ -5,6 +5,7 @@ import {
   useAddPlanningDataMutation,
   useMeQuery,
   usePlanningsQuery,
+  useRemovePlanningDataMutation,
 } from "../../generated/graphql";
 import InputField from "../InputField";
 
@@ -12,6 +13,7 @@ interface Values {
   startDate: string;
   endDate: string;
   ownerId: number;
+  id: number;
 }
 
 export default function PlanningOffers() {
@@ -28,6 +30,8 @@ export default function PlanningOffers() {
   }
 
   const [planningOffers] = useAddPlanningDataMutation();
+  const [removePlanning] = useRemovePlanningDataMutation();
+
   const apolloClient = useApolloClient();
   const { data: userMe } = useMeQuery();
   const { data, loading } = usePlanningsQuery({
@@ -37,8 +41,14 @@ export default function PlanningOffers() {
   });
   const handleFormSubmit = async (values: Values) => {
     const response = await planningOffers({ variables: values });
-
+    apolloClient.resetStore();
     console.log(values);
+  };
+
+  const PlanningArchived = (values: Values) => {
+    removePlanning({ variables: values });
+    apolloClient.resetStore();
+    return alert("offre archivé avec succès ");
   };
 
   return (
@@ -48,6 +58,7 @@ export default function PlanningOffers() {
           startDate: new Date().toISOString().split("T")[0],
           endDate: "",
           ownerId: userMe!.me!.id,
+          id: 0,
         }}
         onSubmit={handleFormSubmit}
       >
@@ -83,6 +94,27 @@ export default function PlanningOffers() {
           </Form>
         )}
       </Formik>
+      <h2 style={{ padding: "15px" }}>
+        Date d'indisponiblités concernant toutes vos offres :
+      </h2>
+      {data?.plannings?.map((planning, index) => (
+        <div key={index} style={{ padding: "10px" }}>
+          <p>Date de début : {planning.startDate.split("T")[0]}</p>
+          <p>Date de fin : {planning.endDate.split("T")[0]}</p>
+          <button
+            onClick={() =>
+              PlanningArchived({
+                ownerId: userMe!.me!.id,
+                id: planning.id,
+                endDate: planning.endDate,
+                startDate: planning.startDate,
+              })
+            }
+          >
+            Archivé ces dates
+          </button>
+        </div>
+      ))}
     </>
   );
 }

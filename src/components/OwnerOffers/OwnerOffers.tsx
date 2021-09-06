@@ -53,7 +53,7 @@ export default function OwnerOffers() {
             Ajouter des dates d'indisponiblités pour vos offres
           </Button>
         </Link>
-        <Link
+        {/* <Link
           to="/PlanningOffer"
           style={{
             marginLeft: "50px",
@@ -66,7 +66,7 @@ export default function OwnerOffers() {
           <Button type="submit" fullWidth variant="contained">
             Ajouter des dates d'indisponiblités pour une offre
           </Button>
-        </Link>
+        </Link> */}
       </div>
       {data!.offers.offers.map((offer, index) => (
         <div key={index}>
