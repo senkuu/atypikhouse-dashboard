@@ -839,6 +839,14 @@ export type OffersQueryVariables = Exact<{
 
 export type OffersQuery = { __typename?: 'Query', offers: { __typename?: 'SearchOfferResponse', offers: Array<{ __typename?: 'Offer', id: number, title: string, description: string, distance?: Maybe<number>, sortScore?: Maybe<number>, averageRating?: Maybe<number>, latitude?: Maybe<number>, longitude?: Maybe<number>, priceTTC: number, status: string, deleteReason: string, createdAt: string, touristTax: number, address?: Maybe<string>, city?: Maybe<{ __typename?: 'City', name: string, id: number, departement: { __typename?: 'Departement', number: string } }>, photos?: Maybe<Array<{ __typename?: 'Photo', id: number, url: string }>>, offerType: { __typename?: 'OfferType', id: number, name: string }, owner: { __typename?: 'User', name: string } }> } };
 
+export type PlanningsQueryVariables = Exact<{
+  offerId?: Maybe<Scalars['Float']>;
+  ownerId?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type PlanningsQuery = { __typename?: 'Query', plannings?: Maybe<Array<{ __typename?: 'Planning', id: number, startDate: any, endDate: any }>> };
+
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {
   id
@@ -1542,3 +1550,39 @@ export function useOffersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Off
 export type OffersQueryHookResult = ReturnType<typeof useOffersQuery>;
 export type OffersLazyQueryHookResult = ReturnType<typeof useOffersLazyQuery>;
 export type OffersQueryResult = Apollo.QueryResult<OffersQuery, OffersQueryVariables>;
+export const PlanningsDocument = gql`
+    query plannings($offerId: Float, $ownerId: Float) {
+  plannings(options: {offerId: $offerId, ownerId: $ownerId}) {
+    ...BasePlanning
+  }
+}
+    ${BasePlanningFragmentDoc}`;
+
+/**
+ * __usePlanningsQuery__
+ *
+ * To run a query within a React component, call `usePlanningsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePlanningsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePlanningsQuery({
+ *   variables: {
+ *      offerId: // value for 'offerId'
+ *      ownerId: // value for 'ownerId'
+ *   },
+ * });
+ */
+export function usePlanningsQuery(baseOptions?: Apollo.QueryHookOptions<PlanningsQuery, PlanningsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PlanningsQuery, PlanningsQueryVariables>(PlanningsDocument, options);
+      }
+export function usePlanningsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PlanningsQuery, PlanningsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PlanningsQuery, PlanningsQueryVariables>(PlanningsDocument, options);
+        }
+export type PlanningsQueryHookResult = ReturnType<typeof usePlanningsQuery>;
+export type PlanningsLazyQueryHookResult = ReturnType<typeof usePlanningsLazyQuery>;
+export type PlanningsQueryResult = Apollo.QueryResult<PlanningsQuery, PlanningsQueryVariables>;

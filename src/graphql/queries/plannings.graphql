@@ -1,0 +1,5 @@
+query plannings($offerId: Float, $ownerId: Float) {
+  plannings(options: { offerId: $offerId, ownerId: $ownerId }) {
+    ...BasePlanning
+  }
+}

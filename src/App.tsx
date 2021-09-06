@@ -13,6 +13,8 @@ import AdminOffers from "./components/AdminOffers";
 import WaitingOffers from "./components/WaitingOffers";
 import DisabledOffers from "./components/DisabledOffers";
 import OwnerList from "./components/OwnerList";
+import PlanningOffers from "./components/PlanningOffers";
+import PlanningOffer from "./components/PlanningOffer";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
                 <Route path="/updateOffer" component={OfferUpdate} />
                 <Route path="/offers_available" component={AdminOffers} />
                 <Route path="/activationPending" component={OwnerList} />
+                <Route path="/PlanningOffers" component={PlanningOffers} />
+                <Route path="/PlanningOffer" component={PlanningOffer} />
                 <Route
                   path="/offers_waiting_approval"
                   component={WaitingOffers}
