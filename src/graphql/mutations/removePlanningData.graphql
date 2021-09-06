@@ -1,0 +1,7 @@
+mutation removePlanningData(
+  $id: Float!
+) {
+  removePlanningData(
+    id: $id
+  )
+}

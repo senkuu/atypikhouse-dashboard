@@ -1,0 +1,22 @@
+mutation addPlanningData(
+  $startDate: DateTime!
+  $endDate: DateTime!
+  $offerId: Float
+  $ownerId: Float
+) {
+  addPlanningData(
+    options: {
+      startDate: $startDate
+      endDate: $endDate
+      offerId: $offerId
+      ownerId: $ownerId
+    }
+  ) {
+    errors {
+      ...BaseError
+    }
+    planningData {
+      ...BasePlanning
+    }
+  }
+}

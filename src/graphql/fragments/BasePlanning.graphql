@@ -1,0 +1,5 @@
+fragment BasePlanning on Planning {
+  id
+  startDate
+  endDate
+}
