@@ -23,6 +23,7 @@ mutation updateUser(
       name
       surname
       email
+      status
       # cityId
     }
     errors {

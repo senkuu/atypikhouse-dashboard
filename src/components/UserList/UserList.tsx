@@ -18,6 +18,7 @@ import {
   useUpdateUserMutation,
   useUsersQuery,
 } from "../../generated/graphql";
+import { useApolloClient } from "@apollo/client";
 
 interface Values {
   id: number;
@@ -62,8 +63,11 @@ export default function UserList() {
   const { data: userMe } = useMeQuery();
   const [updateUser] = useUpdateUserMutation();
 
+  const apolloClient = useApolloClient();
+
   const UserArchived = (values: Values) => {
     updateUser({ variables: values });
+    apolloClient.resetStore();
     return alert("utilisateur archivé avec succès ");
   };
 
@@ -111,6 +115,7 @@ export default function UserList() {
                   <TableCell align="left">Prénom</TableCell>
                   <TableCell align="left">Nom</TableCell>
                   <TableCell align="left">Type</TableCell>
+                  <TableCell align="left">Status</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -127,6 +132,7 @@ export default function UserList() {
                       <TableCell align="left">{users.name}</TableCell>
                       <TableCell align="left">{users.surname}</TableCell>
                       <TableCell align="left">{users.userType}</TableCell>
+                      <TableCell align="left">{users.status}</TableCell>
                       <TableCell align="center">
                         <ButtonGroup
                           color="primary"

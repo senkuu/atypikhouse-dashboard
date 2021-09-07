@@ -97,6 +97,12 @@ export type CreateOfferTypeInput = {
   criteriaIds?: Maybe<Array<Scalars['Float']>>;
 };
 
+export type CreateReviewInput = {
+  bookingId: Scalars['Float'];
+  text: Scalars['String'];
+  rating: Scalars['Float'];
+};
+
 export type Criteria = {
   __typename?: 'Criteria';
   id: Scalars['Float'];
@@ -166,6 +172,9 @@ export type Mutation = {
   addPlanningData: PlanningDataResponse;
   updatePlanningData?: Maybe<PlanningDataResponse>;
   removePlanningData: Scalars['Boolean'];
+  createReview: ReviewResponse;
+  updateReview?: Maybe<ReviewResponse>;
+  deleteReview: Scalars['Boolean'];
 };
 
 
@@ -332,6 +341,22 @@ export type MutationRemovePlanningDataArgs = {
   id: Scalars['Float'];
 };
 
+
+export type MutationCreateReviewArgs = {
+  options: CreateReviewInput;
+};
+
+
+export type MutationUpdateReviewArgs = {
+  options: UpdateReviewInput;
+  id: Scalars['Float'];
+};
+
+
+export type MutationDeleteReviewArgs = {
+  id: Scalars['Float'];
+};
+
 export type Notice = {
   __typename?: 'Notice';
   id: Scalars['Float'];
@@ -462,6 +487,8 @@ export type Query = {
   departements?: Maybe<Array<Departement>>;
   departement?: Maybe<Departement>;
   plannings: Array<Planning>;
+  reviews: Array<Review>;
+  review?: Maybe<Review>;
 };
 
 
@@ -573,6 +600,19 @@ export type QueryPlanningsArgs = {
   options: SearchPlanningDataInput;
 };
 
+
+export type QueryReviewsArgs = {
+  occupantId?: Maybe<Scalars['Float']>;
+  ownerId?: Maybe<Scalars['Float']>;
+  offerId?: Maybe<Scalars['Float']>;
+};
+
+
+export type QueryReviewArgs = {
+  bookingId?: Maybe<Scalars['Float']>;
+  id: Scalars['Float'];
+};
+
 export type Region = {
   __typename?: 'Region';
   id: Scalars['Float'];
@@ -597,6 +637,12 @@ export type Review = {
   rating: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type ReviewResponse = {
+  __typename?: 'ReviewResponse';
+  errors?: Maybe<Array<FieldError>>;
+  review?: Maybe<Review>;
 };
 
 export type SearchOfferResponse = {
@@ -646,6 +692,11 @@ export type UpdatePlanningDataInput = {
   endDate?: Maybe<Scalars['DateTime']>;
 };
 
+export type UpdateReviewInput = {
+  text?: Maybe<Scalars['String']>;
+  rating?: Maybe<Scalars['Float']>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['Float'];
@@ -659,7 +710,6 @@ export type User = {
   city?: Maybe<City>;
   notices?: Maybe<Array<Notice>>;
   linkedNotices?: Maybe<Array<Notice>>;
-  photo?: Maybe<Photo>;
   planningData?: Maybe<Array<Planning>>;
   userType: Scalars['String'];
   status: Scalars['String'];
@@ -791,7 +841,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, website?: Maybe<string>, description?: Maybe<string>, name: string, surname: string, email: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> }> };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, website?: Maybe<string>, description?: Maybe<string>, name: string, surname: string, email: string, status: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> }> };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -1314,6 +1364,7 @@ export const UpdateUserDocument = gql`
       name
       surname
       email
+      status
     }
     errors {
       field

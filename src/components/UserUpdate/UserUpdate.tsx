@@ -67,6 +67,7 @@ export default function UserUpdate() {
   const getLocation = location.pathname.split("update/")[1];
   const ID: number = parseInt(getLocation);
   console.log(ID);
+
   const { data, loading: meLoading } = useUserQuery({
     variables: {
       id: ID,
@@ -84,7 +85,7 @@ export default function UserUpdate() {
     return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
   if (data === undefined || data === null) {
-    return <p>Page non disponible, veuillez préciser un ID utilisateur </p>;
+    console.log(data);
   }
 
   if (data?.user?.id === ID && null) {
@@ -220,7 +221,7 @@ export default function UserUpdate() {
                           fontSize: "12px",
                         }}
                       >
-                        Statut de l'offre :
+                        Statut de l'utilisateur :
                       </InputLabel>
                       <Field
                         style={{
