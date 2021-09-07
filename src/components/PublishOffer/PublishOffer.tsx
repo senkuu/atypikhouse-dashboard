@@ -80,7 +80,7 @@ export default function PublishOffer() {
 
     console.log(data.getAll("image"))
 
-    fetch(`${process.env.API_URL ?? "http://localhost:4000"}/offer/${graphqlResponse.data!.createOffer.offer!.id}/images`, {
+    fetch(`${process.env.REACT_APP_API_URL ?? "http://localhost:4000"}/offer/${graphqlResponse.data!.createOffer.offer!.id}/images`, {
       method: 'post',
       headers: new Headers({
         Accept: "application/json"
