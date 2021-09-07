@@ -418,21 +418,10 @@ export type OfferTypeResponse = {
 export type Photo = {
   __typename?: 'Photo';
   id: Scalars['Float'];
+  filename: Scalars['String'];
   url: Scalars['String'];
-  user?: Maybe<User>;
-  description?: Maybe<Scalars['String']>;
-  booking?: Maybe<Booking>;
+  mimetype: Scalars['String'];
   offer?: Maybe<Offer>;
-  photoType: PhotoType;
-};
-
-export type PhotoType = {
-  __typename?: 'PhotoType';
-  id: Scalars['Float'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
 };
 
 export type Planning = {
@@ -472,7 +461,7 @@ export type Query = {
   region?: Maybe<Region>;
   departements?: Maybe<Array<Departement>>;
   departement?: Maybe<Departement>;
-  plannings?: Maybe<Array<Planning>>;
+  plannings: Array<Planning>;
 };
 
 
@@ -845,7 +834,7 @@ export type PlanningsQueryVariables = Exact<{
 }>;
 
 
-export type PlanningsQuery = { __typename?: 'Query', plannings?: Maybe<Array<{ __typename?: 'Planning', id: number, startDate: any, endDate: any }>> };
+export type PlanningsQuery = { __typename?: 'Query', plannings: Array<{ __typename?: 'Planning', id: number, startDate: any, endDate: any }> };
 
 export const BaseOfferFragmentDoc = gql`
     fragment BaseOffer on Offer {

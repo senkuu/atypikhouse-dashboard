@@ -14,6 +14,7 @@ interface Values {
   password: string;
   userType: string;
   status: string;
+  images: File[];
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +83,7 @@ export default function UserCreate() {
             password: "",
             userType: "",
             status: "activated",
+            images: []
           }}
           onSubmit={handleFormSubmit}
         >

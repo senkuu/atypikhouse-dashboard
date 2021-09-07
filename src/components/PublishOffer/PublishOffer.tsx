@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -56,14 +57,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PublishOffer() {
   const classes = useStyles();
+  const [images, setImages] = useState<File[]>([])
   const [createOffer] = useCreateOfferMutation();
   const { data: userMe } = useMeQuery();
   const apolloClient = useApolloClient();
 
   const handleFormSubmit = async (values: Values) => {
-    const response = await createOffer({ variables: values });
+    const graphqlResponse = await createOffer({ variables: values });
 
-    if (response === null) {
+    if (graphqlResponse === null) {
       return (
         <p>
           Une erreur est survenue, veuillez réessayer plus tard ou contacter
@@ -71,6 +73,21 @@ export default function PublishOffer() {
         </p>
       );
     }
+
+    const data = new FormData();
+
+    images.map((file) => data.append("image", file))
+
+    console.log(data.getAll("image"))
+
+    fetch(`http://localhost:4000/offer/${graphqlResponse.data!.createOffer.offer!.id}/images`, {
+      method: 'post',
+      headers: new Headers({
+        Accept: "application/json"
+      }),
+      body: data
+    })
+
     apolloClient.resetStore();
   };
 
@@ -190,6 +207,21 @@ export default function PublishOffer() {
                     required
                   />
                 </Grid>
+                <Grid item xs={12}>
+                  <InputField
+                    icon="image"
+                    label="Images"
+                    name="images"
+                    type="file"
+                    placeholder="image.jpg"
+                    onChange={(e) => {
+                      Array.from(e.target.files!).forEach(file => {
+                        setImages(prev => [...prev, file])
+                      })
+                    }}
+                    multiple
+                  />
+                </Grid>
               </Grid>
               <Button
                 type="submit"
@@ -203,6 +235,6 @@ export default function PublishOffer() {
           )}
         </Formik>
       </div>
-    </Container>
+    </Container >
   );
 }
