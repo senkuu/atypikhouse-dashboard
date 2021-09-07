@@ -1,0 +1,9 @@
+query criterias {
+  criterias {
+    id
+    name
+    additional
+    isGlobal
+    criteriaType
+  }
+}

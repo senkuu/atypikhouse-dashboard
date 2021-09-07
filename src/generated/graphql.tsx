@@ -77,6 +77,13 @@ export type CreateBookingInput = {
   cancelReason?: Maybe<Scalars['String']>;
 };
 
+export type CreateCriteriaInput = {
+  name: Scalars['String'];
+  additional?: Maybe<Scalars['String']>;
+  criteriaType: Scalars['String'];
+  isGlobal: Scalars['Boolean'];
+};
+
 export type CreateOfferInput = {
   title: Scalars['String'];
   description: Scalars['String'];
@@ -121,6 +128,12 @@ export type CriteriaInput = {
   value: Scalars['String'];
 };
 
+export type CriteriaResponse = {
+  __typename?: 'CriteriaResponse';
+  errors?: Maybe<Array<FieldError>>;
+  criteria?: Maybe<Criteria>;
+};
+
 
 export type Departement = {
   __typename?: 'Departement';
@@ -159,10 +172,10 @@ export type Mutation = {
   createBooking: BookingResponse;
   updateBooking?: Maybe<BookingResponse>;
   deleteBooking: Scalars['Boolean'];
-  createCriteria: Criteria;
-  updateCriteria?: Maybe<Criteria>;
-  addCriteriaOfferTypes?: Maybe<Criteria>;
-  removeCriteriaOfferTypes?: Maybe<Criteria>;
+  createCriteria: CriteriaResponse;
+  updateCriteria?: Maybe<CriteriaResponse>;
+  addCriteriaOfferTypes: CriteriaResponse;
+  removeCriteriaOfferTypes: CriteriaResponse;
   deleteCriteria: Scalars['Boolean'];
   createOfferType: OfferTypeResponse;
   updateOfferType: OfferTypeResponse;
@@ -263,32 +276,24 @@ export type MutationDeleteBookingArgs = {
 
 
 export type MutationCreateCriteriaArgs = {
-  isGlobal: Scalars['Boolean'];
-  criteriaType: Scalars['String'];
-  offerTypeIds?: Maybe<Array<Scalars['Float']>>;
-  additional?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
+  options: CreateCriteriaInput;
 };
 
 
 export type MutationUpdateCriteriaArgs = {
-  isGlobal?: Maybe<Scalars['Boolean']>;
-  criteriaType?: Maybe<Scalars['String']>;
-  offerTypeIds?: Maybe<Array<Scalars['Float']>>;
-  additional?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  options: UpdateCriteriaInput;
   id: Scalars['Float'];
 };
 
 
 export type MutationAddCriteriaOfferTypesArgs = {
-  offerTypeIds?: Maybe<Array<Scalars['Float']>>;
+  offerTypeIds: Array<Scalars['Float']>;
   id: Scalars['Float'];
 };
 
 
 export type MutationRemoveCriteriaOfferTypesArgs = {
-  offerTypeIds?: Maybe<Array<Scalars['Float']>>;
+  offerTypeIds: Array<Scalars['Float']>;
   id: Scalars['Float'];
 };
 
@@ -667,6 +672,12 @@ export type UpdateBookingInput = {
   cancelReason?: Maybe<Scalars['String']>;
 };
 
+export type UpdateCriteriaInput = {
+  name?: Maybe<Scalars['String']>;
+  additional?: Maybe<Scalars['String']>;
+  isGlobal?: Maybe<Scalars['Boolean']>;
+};
+
 export type UpdateOfferInput = {
   title?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -760,6 +771,16 @@ export type CreateBookingMutationVariables = Exact<{
 
 export type CreateBookingMutation = { __typename?: 'Mutation', createBooking: { __typename?: 'BookingResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, booking?: Maybe<{ __typename?: 'Booking', id: number, status: string, startDate: any, endDate: any, adults: number, children: number, priceHT: number, priceTTC: number, touristTax: number, cancelReason: string, occupant: { __typename?: 'User', id: number, name: string, surname: string, email: string } }> } };
 
+export type CreateCriteriaMutationVariables = Exact<{
+  name: Scalars['String'];
+  criteriaType: Scalars['String'];
+  additional?: Maybe<Scalars['String']>;
+  isGlobal: Scalars['Boolean'];
+}>;
+
+
+export type CreateCriteriaMutation = { __typename?: 'Mutation', createCriteria: { __typename?: 'CriteriaResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, criteria?: Maybe<{ __typename?: 'Criteria', id: number, name: string, criteriaType: string, additional?: Maybe<string>, isGlobal: boolean }> } };
+
 export type CreateOfferMutationVariables = Exact<{
   status: Scalars['String'];
   deleteReason: Scalars['String'];
@@ -778,6 +799,13 @@ export type CreateOfferMutationVariables = Exact<{
 
 
 export type CreateOfferMutation = { __typename?: 'Mutation', createOffer: { __typename?: 'OfferResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, offer?: Maybe<{ __typename?: 'Offer', id: number, title: string, description: string, address?: Maybe<string>, touristTax: number, priceHT: number, priceTTC: number, deleteReason: string, owner: { __typename?: 'User', id: number, name: string, surname: string }, city?: Maybe<{ __typename?: 'City', id: number, name: string }> }> } };
+
+export type DeleteCriteriaMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type DeleteCriteriaMutation = { __typename?: 'Mutation', deleteCriteria: boolean };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -811,6 +839,16 @@ export type RemovePlanningDataMutationVariables = Exact<{
 
 export type RemovePlanningDataMutation = { __typename?: 'Mutation', removePlanningData: boolean };
 
+export type UpdateCriteriaMutationVariables = Exact<{
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  additional?: Maybe<Scalars['String']>;
+  isGlobal: Scalars['Boolean'];
+}>;
+
+
+export type UpdateCriteriaMutation = { __typename?: 'Mutation', updateCriteria?: Maybe<{ __typename?: 'CriteriaResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>>, criteria?: Maybe<{ __typename?: 'Criteria', id: number, name: string, criteriaType: string, additional?: Maybe<string>, isGlobal: boolean }> }> };
+
 export type UpdateOfferMutationVariables = Exact<{
   id: Scalars['Float'];
   status?: Maybe<Scalars['String']>;
@@ -842,6 +880,18 @@ export type UpdateUserMutationVariables = Exact<{
 
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: Maybe<{ __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, website?: Maybe<string>, description?: Maybe<string>, name: string, surname: string, email: string, status: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', field: string, message: string }>> }> };
+
+export type CriteriaQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type CriteriaQuery = { __typename?: 'Query', criteria?: Maybe<{ __typename?: 'Criteria', id: number, name: string, additional?: Maybe<string>, isGlobal: boolean, criteriaType: string }> };
+
+export type CriteriasQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CriteriasQuery = { __typename?: 'Query', criterias: Array<{ __typename?: 'Criteria', id: number, name: string, additional?: Maybe<string>, isGlobal: boolean, criteriaType: string }> };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['Float'];
@@ -1067,6 +1117,53 @@ export function useCreateBookingMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateBookingMutationHookResult = ReturnType<typeof useCreateBookingMutation>;
 export type CreateBookingMutationResult = Apollo.MutationResult<CreateBookingMutation>;
 export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<CreateBookingMutation, CreateBookingMutationVariables>;
+export const CreateCriteriaDocument = gql`
+    mutation createCriteria($name: String!, $criteriaType: String!, $additional: String, $isGlobal: Boolean!) {
+  createCriteria(
+    options: {name: $name, criteriaType: $criteriaType, additional: $additional, isGlobal: $isGlobal}
+  ) {
+    errors {
+      ...BaseError
+    }
+    criteria {
+      id
+      name
+      criteriaType
+      additional
+      isGlobal
+    }
+  }
+}
+    ${BaseErrorFragmentDoc}`;
+export type CreateCriteriaMutationFn = Apollo.MutationFunction<CreateCriteriaMutation, CreateCriteriaMutationVariables>;
+
+/**
+ * __useCreateCriteriaMutation__
+ *
+ * To run a mutation, you first call `useCreateCriteriaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCriteriaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCriteriaMutation, { data, loading, error }] = useCreateCriteriaMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      criteriaType: // value for 'criteriaType'
+ *      additional: // value for 'additional'
+ *      isGlobal: // value for 'isGlobal'
+ *   },
+ * });
+ */
+export function useCreateCriteriaMutation(baseOptions?: Apollo.MutationHookOptions<CreateCriteriaMutation, CreateCriteriaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateCriteriaMutation, CreateCriteriaMutationVariables>(CreateCriteriaDocument, options);
+      }
+export type CreateCriteriaMutationHookResult = ReturnType<typeof useCreateCriteriaMutation>;
+export type CreateCriteriaMutationResult = Apollo.MutationResult<CreateCriteriaMutation>;
+export type CreateCriteriaMutationOptions = Apollo.BaseMutationOptions<CreateCriteriaMutation, CreateCriteriaMutationVariables>;
 export const CreateOfferDocument = gql`
     mutation createOffer($status: String!, $deleteReason: String!, $offerTypeId: Float!, $ownerId: Float!, $cityId: Float!, $priceHT: Float!, $priceTTC: Float!, $touristTax: Float!, $description: String!, $title: String!, $address: String!, $longitude: Float!, $latitude: Float!) {
   createOffer(
@@ -1135,6 +1232,37 @@ export function useCreateOfferMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateOfferMutationHookResult = ReturnType<typeof useCreateOfferMutation>;
 export type CreateOfferMutationResult = Apollo.MutationResult<CreateOfferMutation>;
 export type CreateOfferMutationOptions = Apollo.BaseMutationOptions<CreateOfferMutation, CreateOfferMutationVariables>;
+export const DeleteCriteriaDocument = gql`
+    mutation deleteCriteria($id: Float!) {
+  deleteCriteria(id: $id)
+}
+    `;
+export type DeleteCriteriaMutationFn = Apollo.MutationFunction<DeleteCriteriaMutation, DeleteCriteriaMutationVariables>;
+
+/**
+ * __useDeleteCriteriaMutation__
+ *
+ * To run a mutation, you first call `useDeleteCriteriaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCriteriaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCriteriaMutation, { data, loading, error }] = useDeleteCriteriaMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCriteriaMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCriteriaMutation, DeleteCriteriaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCriteriaMutation, DeleteCriteriaMutationVariables>(DeleteCriteriaDocument, options);
+      }
+export type DeleteCriteriaMutationHookResult = ReturnType<typeof useDeleteCriteriaMutation>;
+export type DeleteCriteriaMutationResult = Apollo.MutationResult<DeleteCriteriaMutation>;
+export type DeleteCriteriaMutationOptions = Apollo.BaseMutationOptions<DeleteCriteriaMutation, DeleteCriteriaMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(options: {email: $email, password: $password}) {
@@ -1282,6 +1410,54 @@ export function useRemovePlanningDataMutation(baseOptions?: Apollo.MutationHookO
 export type RemovePlanningDataMutationHookResult = ReturnType<typeof useRemovePlanningDataMutation>;
 export type RemovePlanningDataMutationResult = Apollo.MutationResult<RemovePlanningDataMutation>;
 export type RemovePlanningDataMutationOptions = Apollo.BaseMutationOptions<RemovePlanningDataMutation, RemovePlanningDataMutationVariables>;
+export const UpdateCriteriaDocument = gql`
+    mutation updateCriteria($id: Float!, $name: String!, $additional: String, $isGlobal: Boolean!) {
+  updateCriteria(
+    id: $id
+    options: {name: $name, additional: $additional, isGlobal: $isGlobal}
+  ) {
+    errors {
+      ...BaseError
+    }
+    criteria {
+      id
+      name
+      criteriaType
+      additional
+      isGlobal
+    }
+  }
+}
+    ${BaseErrorFragmentDoc}`;
+export type UpdateCriteriaMutationFn = Apollo.MutationFunction<UpdateCriteriaMutation, UpdateCriteriaMutationVariables>;
+
+/**
+ * __useUpdateCriteriaMutation__
+ *
+ * To run a mutation, you first call `useUpdateCriteriaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCriteriaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCriteriaMutation, { data, loading, error }] = useUpdateCriteriaMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      additional: // value for 'additional'
+ *      isGlobal: // value for 'isGlobal'
+ *   },
+ * });
+ */
+export function useUpdateCriteriaMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCriteriaMutation, UpdateCriteriaMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateCriteriaMutation, UpdateCriteriaMutationVariables>(UpdateCriteriaDocument, options);
+      }
+export type UpdateCriteriaMutationHookResult = ReturnType<typeof useUpdateCriteriaMutation>;
+export type UpdateCriteriaMutationResult = Apollo.MutationResult<UpdateCriteriaMutation>;
+export type UpdateCriteriaMutationOptions = Apollo.BaseMutationOptions<UpdateCriteriaMutation, UpdateCriteriaMutationVariables>;
 export const UpdateOfferDocument = gql`
     mutation updateOffer($id: Float!, $status: String, $deleteReason: String, $offerTypeId: Float, $ownerId: Float, $priceHT: Float, $priceTTC: Float, $touristTax: Float, $description: String, $title: String, $address: String, $longitude: Float!, $latitude: Float!) {
   updateOffer(
@@ -1405,6 +1581,83 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const CriteriaDocument = gql`
+    query criteria($id: Float!) {
+  criteria(id: $id) {
+    id
+    name
+    additional
+    isGlobal
+    criteriaType
+  }
+}
+    `;
+
+/**
+ * __useCriteriaQuery__
+ *
+ * To run a query within a React component, call `useCriteriaQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCriteriaQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCriteriaQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCriteriaQuery(baseOptions: Apollo.QueryHookOptions<CriteriaQuery, CriteriaQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CriteriaQuery, CriteriaQueryVariables>(CriteriaDocument, options);
+      }
+export function useCriteriaLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CriteriaQuery, CriteriaQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CriteriaQuery, CriteriaQueryVariables>(CriteriaDocument, options);
+        }
+export type CriteriaQueryHookResult = ReturnType<typeof useCriteriaQuery>;
+export type CriteriaLazyQueryHookResult = ReturnType<typeof useCriteriaLazyQuery>;
+export type CriteriaQueryResult = Apollo.QueryResult<CriteriaQuery, CriteriaQueryVariables>;
+export const CriteriasDocument = gql`
+    query criterias {
+  criterias {
+    id
+    name
+    additional
+    isGlobal
+    criteriaType
+  }
+}
+    `;
+
+/**
+ * __useCriteriasQuery__
+ *
+ * To run a query within a React component, call `useCriteriasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCriteriasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCriteriasQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCriteriasQuery(baseOptions?: Apollo.QueryHookOptions<CriteriasQuery, CriteriasQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CriteriasQuery, CriteriasQueryVariables>(CriteriasDocument, options);
+      }
+export function useCriteriasLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CriteriasQuery, CriteriasQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CriteriasQuery, CriteriasQueryVariables>(CriteriasDocument, options);
+        }
+export type CriteriasQueryHookResult = ReturnType<typeof useCriteriasQuery>;
+export type CriteriasLazyQueryHookResult = ReturnType<typeof useCriteriasLazyQuery>;
+export type CriteriasQueryResult = Apollo.QueryResult<CriteriasQuery, CriteriasQueryVariables>;
 export const UserDocument = gql`
     query user($id: Float!) {
   user(id: $id) {

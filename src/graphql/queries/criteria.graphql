@@ -1,0 +1,9 @@
+query criteria($id: Float!) {
+  criteria(id: $id) {
+    id
+    name
+    additional
+    isGlobal
+    criteriaType
+  }
+}

@@ -28,6 +28,7 @@ import {
   CheckCircle,
   Cancel,
   WatchLater,
+  PlaylistAddCheck,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import {
@@ -289,6 +290,17 @@ export default function Sidebar(props: props) {
                     <LocalOffer />
                   </ListItemIcon>
                   <ListItemText>Vos offres</ListItemText>
+                </ListItem>
+              </Link>
+              <Link
+                to="/createCriteria"
+                style={{ textDecoration: "none", color: "#222" }}
+              >
+                <ListItem>
+                  <ListItemIcon>
+                    <PlaylistAddCheck />
+                  </ListItemIcon>
+                  <ListItemText>Critères</ListItemText>
                 </ListItem>
               </Link>
             </List>

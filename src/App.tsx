@@ -15,7 +15,7 @@ import DisabledOffers from "./components/DisabledOffers";
 import OwnerList from "./components/OwnerList";
 import PlanningOffers from "./components/PlanningOffers";
 import PlanningOffer from "./components/PlanningOffer";
-
+import CreateCriteria from "./components/CreateCriteria";
 function App() {
   return (
     <ApolloProvider client={apolloClient}>
@@ -32,6 +32,7 @@ function App() {
                 <Route path="/updateOffer" component={OfferUpdate} />
                 <Route path="/offers_available" component={AdminOffers} />
                 <Route path="/activationPending" component={OwnerList} />
+                <Route path="/createCriteria" component={CreateCriteria} />
                 <Route path="/PlanningOffers" component={PlanningOffers} />
                 <Route path="/PlanningOffer" component={PlanningOffer} />
                 <Route

@@ -1,0 +1,26 @@
+mutation createCriteria(
+  $name: String!
+  $criteriaType: String!
+  $additional: String
+  $isGlobal: Boolean!
+) {
+  createCriteria(
+    options: {
+      name: $name
+      criteriaType: $criteriaType
+      additional: $additional
+      isGlobal: $isGlobal
+    }
+  ) {
+    errors {
+      ...BaseError
+    }
+    criteria {
+      id
+      name
+      criteriaType
+      additional
+      isGlobal
+    }
+  }
+}

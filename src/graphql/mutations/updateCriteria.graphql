@@ -1,0 +1,22 @@
+mutation updateCriteria(
+  $id: Float!
+  $name: String!
+  $additional: String
+  $isGlobal: Boolean!
+) {
+  updateCriteria(
+    id: $id
+    options: { name: $name, additional: $additional, isGlobal: $isGlobal }
+  ) {
+    errors {
+      ...BaseError
+    }
+    criteria {
+      id
+      name
+      criteriaType
+      additional
+      isGlobal
+    }
+  }
+}
