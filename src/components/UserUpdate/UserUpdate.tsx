@@ -118,7 +118,7 @@ export default function UserUpdate() {
   };
 
   const handleFormSubmit = async (values: Values) => {
-    const response = await updateUser({ variables: values });
+    await updateUser({ variables: values });
     apolloClient.resetStore();
   };
 

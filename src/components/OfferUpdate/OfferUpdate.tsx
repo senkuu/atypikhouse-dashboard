@@ -13,7 +13,6 @@ import { Formik, Form, Field } from "formik";
 import InputField from "../InputField";
 import { InputLabel } from "@material-ui/core";
 import { useState } from "react";
-import { useApolloClient } from "@apollo/client";
 
 interface Values {
   id: number;
@@ -68,7 +67,6 @@ export default function OfferUpdate() {
       id: ID,
     },
   });
-  const apolloClient = useApolloClient();
   const [updateOffer] = useUpdateOfferMutation();
 
   const [changed, isChanged] = useState(false);
@@ -85,7 +83,7 @@ export default function OfferUpdate() {
   }
 
   const handleFormSubmit = async (values: Values) => {
-    const response = await updateOffer({ variables: values });
+    await updateOffer({ variables: values });
   };
 
   let body = null;
@@ -124,7 +122,7 @@ export default function OfferUpdate() {
               }}
               onSubmit={handleFormSubmit}
             >
-              {({ isSubmitting }) => (
+              {() => (
                 <Form style={{ marginTop: "20px" }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -245,7 +243,7 @@ export default function OfferUpdate() {
                       Modifications prises en compte
                     </p>
                   ) : (
-                    <p></p>
+                    <p>Test</p>
                   )}
                 </Form>
               )}

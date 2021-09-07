@@ -34,13 +34,13 @@ export default function PlanningOffers() {
 
   const apolloClient = useApolloClient();
   const { data: userMe } = useMeQuery();
-  const { data, loading } = usePlanningsQuery({
+  const { data } = usePlanningsQuery({
     variables: {
       ownerId: userMe?.me?.id,
     },
   });
   const handleFormSubmit = async (values: Values) => {
-    const response = await planningOffers({ variables: values });
+    await planningOffers({ variables: values });
     apolloClient.resetStore();
     console.log(values);
   };
@@ -62,7 +62,7 @@ export default function PlanningOffers() {
         }}
         onSubmit={handleFormSubmit}
       >
-        {({ isSubmitting, values }) => (
+        {({ values }) => (
           <Form>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>

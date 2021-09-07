@@ -147,7 +147,7 @@ export default function Sidebar(props: props) {
   };
 
   const handleFormSubmit = async (values: Values) => {
-    const response = await login({ variables: values });
+    await login({ variables: values });
 
     apolloClient.resetStore();
   };
@@ -170,7 +170,7 @@ export default function Sidebar(props: props) {
           }}
           onSubmit={handleFormSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form className={classes.form}>
               <InputField
                 icon="alternate_email"

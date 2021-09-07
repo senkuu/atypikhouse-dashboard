@@ -1,4 +1,3 @@
-import { useApolloClient } from "@apollo/client";
 import { Button, Grid, InputLabel } from "@material-ui/core";
 import { Field, Form, Formik } from "formik";
 import {
@@ -28,7 +27,6 @@ export default function PlanningOffer() {
   }
 
   const [planningOffers] = useAddPlanningDataMutation();
-  const apolloClient = useApolloClient();
   const { data: userMe, loading } = useMeQuery();
   const { data } = useOffersQuery({
     variables: {
@@ -40,7 +38,7 @@ export default function PlanningOffer() {
   });
 
   const handleFormSubmit = async (values: Values) => {
-    const response = await planningOffers({ variables: values });
+    await planningOffers({ variables: values });
 
     console.log(values);
   };
@@ -70,7 +68,7 @@ export default function PlanningOffer() {
         }}
         onSubmit={handleFormSubmit}
       >
-        {({ isSubmitting, values }) => (
+        {({ values }) => (
           <Form>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
