@@ -81,7 +81,7 @@ export default function OfferUpdate() {
   }
 
   if (data?.offer?.id === ID && null) {
-    return <p>desole existe pas</p>;
+    return <p>Une erreur est survenue : cela n'existe pas</p>;
   }
 
   const handleFormSubmit = async (values: Values) => {
@@ -107,7 +107,7 @@ export default function OfferUpdate() {
               variant="h5"
               style={{ fontFamily: "Lora" }}
             >
-              Modifier annonce "{data.offer.title}"
+              Modifier l'annonce "{data.offer.title}"
             </Typography>
             <Formik
               initialValues={{
@@ -242,7 +242,7 @@ export default function OfferUpdate() {
                   </Button>
                   {changed ? (
                     <p style={{ textAlign: "center", color: "green" }}>
-                      modification prise en compte
+                      Modifications prises en compte
                     </p>
                   ) : (
                     <p></p>

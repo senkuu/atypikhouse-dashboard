@@ -303,7 +303,7 @@ export default function Sidebar(props: props) {
                     <ListItemIcon>
                       <Group />
                     </ListItemIcon>
-                    <ListItemText>Les Utilisateurs</ListItemText>
+                    <ListItemText>Les utilisateurs</ListItemText>
                   </ListItem>
                 </Link>
                 <Link

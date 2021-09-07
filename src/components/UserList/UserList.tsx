@@ -110,7 +110,7 @@ export default function UserList() {
                   <TableCell align="center">Avatar</TableCell>
                   <TableCell align="left">Prénom</TableCell>
                   <TableCell align="left">Nom</TableCell>
-                  <TableCell align="left">UserType</TableCell>
+                  <TableCell align="left">Type</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -144,7 +144,7 @@ export default function UserList() {
                                 UserArchived({ id: users.id, status: "closed" })
                               }
                             >
-                              Archivé
+                              Archiver
                             </Button>
                           </Link>
                         </ButtonGroup>
