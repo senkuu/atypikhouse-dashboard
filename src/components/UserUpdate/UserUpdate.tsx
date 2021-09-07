@@ -84,11 +84,11 @@ export default function UserUpdate() {
     return <p>Vous ne pouvez pas accéder à cette page.</p>;
   }
   if (data === undefined || data === null) {
-    return <p>page non disponible, Veuillez préciser un ID utilisateur </p>;
+    return <p>Page non disponible, veuillez préciser un ID utilisateur </p>;
   }
 
   if (data?.user?.id === ID && null) {
-    return <p>desole existe pas</p>;
+    return <p>Désolé, cet élément n'existe pas</p>;
   }
 
   // Check if url already
@@ -174,7 +174,7 @@ export default function UserUpdate() {
                         label="A propos de vous"
                         name="description"
                         type="text"
-                        placeholder="Raconter nous comment vous êtes unique."
+                        placeholder="Racontez-nous comment vous êtes unique."
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -260,7 +260,7 @@ export default function UserUpdate() {
                   </Button>
                   {changed ? (
                     <p style={{ textAlign: "center", color: "green" }}>
-                      modification prise en compte
+                      Modification prises en compte
                     </p>
                   ) : (
                     <p></p>

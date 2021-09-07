@@ -94,11 +94,11 @@ function OfferCard(props: Props) {
                 <TableRow>
                   <TableCell align="right">ID</TableCell>
                   <TableCell align="center" style={{ width: "20%" }}>
-                    title
+                    Titre
                   </TableCell>
-                  <TableCell align="left">priceTTC</TableCell>
+                  <TableCell align="left">Prix TTC</TableCell>
                   <TableCell align="left">Taxe de séjour</TableCell>
-                  <TableCell align="left">status </TableCell>
+                  <TableCell align="left">Statut</TableCell>
                   <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
@@ -133,7 +133,7 @@ function OfferCard(props: Props) {
                                 })
                               }
                             >
-                              Validé
+                              Valider
                             </Button>
                           </Link>
                         </ButtonGroup>
@@ -159,7 +159,7 @@ function OfferCard(props: Props) {
                                 })
                               }
                             >
-                              Archivé
+                              Archiver
                             </Button>
                           </Link>
                         </ButtonGroup>

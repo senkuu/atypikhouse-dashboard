@@ -115,7 +115,7 @@ export default function OwnerList() {
                     <TableCell align="center">Avatar</TableCell>
                     <TableCell align="left">Prénom</TableCell>
                     <TableCell align="left">Nom</TableCell>
-                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">Statut</TableCell>
                     <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>

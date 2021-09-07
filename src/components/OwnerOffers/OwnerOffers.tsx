@@ -50,7 +50,7 @@ export default function OwnerOffers() {
               color: "white",
             }}
           >
-            Ajouter des dates d'indisponiblités pour vos offres
+            Ajouter des dates d'indisponiblité pour vos offres
           </Button>
         </Link>
         {/* <Link

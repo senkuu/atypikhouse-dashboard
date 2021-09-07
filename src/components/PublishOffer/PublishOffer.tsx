@@ -138,7 +138,7 @@ export default function PublishOffer() {
                       padding: "10px",
                     }}
                     name="description"
-                    placeholder="description de l'annonce"
+                    placeholder="Description de l'annonce"
                     as="textarea"
                     required
                   />
@@ -184,7 +184,7 @@ export default function PublishOffer() {
                 <Grid item xs={12}>
                   <InputField
                     icon="account_balance"
-                    label="Prix Taxe de séjour en EURO"
+                    label="Prix taxe de séjour en EURO"
                     name="touristTax"
                     type="number"
                     required
