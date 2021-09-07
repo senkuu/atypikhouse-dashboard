@@ -80,7 +80,7 @@ export default function PublishOffer() {
 
     console.log(data.getAll("image"))
 
-    fetch(`http://localhost:4000/offer/${graphqlResponse.data!.createOffer.offer!.id}/images`, {
+    fetch(`http://api.atypikhou.se/offer/${graphqlResponse.data!.createOffer.offer!.id}/images`, {
       method: 'post',
       headers: new Headers({
         Accept: "application/json"
